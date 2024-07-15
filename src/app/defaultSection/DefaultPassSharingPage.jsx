@@ -4,9 +4,9 @@ import { sharingPassPoints } from "../../utils/constants";
 const DefaultPassSharingPage = () => {
   return (
     <div>
-      <Card className="w-full flex justify-center rounded-none h-screen">
-        <CardHeader className="px-44 pt-28">
-          <CardTitle className="text-6xl font-bold text-orange-600 flex justify-center">
+      <Card className="w-full rounded-none">
+        <CardHeader className="lg:px-28 md:px-16 sm:px-10 xl:px-44 pt-32 max-sm:items-center">
+          <CardTitle className="sm:text-5xl text-3xl xl:text-6xl font-bold text-orange-600 flex justify-center">
             <p>Seamless Password Sharing</p>
           </CardTitle>
           <div className="py-2"></div>
@@ -18,10 +18,9 @@ const DefaultPassSharingPage = () => {
               >
                 <div className=" flex items-center space-x-4 rounded-md ">
                   <CardHeader>
-                    <CardTitle className="text-xl font-bold text-orange-600">
+                    <CardTitle className="max-sm:text-lg text-xl font-bold text-orange-600">
                       {point.title}
                     </CardTitle>
-                    <div className=""></div>
                     <CardTitle className="text-sm text-muted-foreground">
                       {point.content}
                     </CardTitle>

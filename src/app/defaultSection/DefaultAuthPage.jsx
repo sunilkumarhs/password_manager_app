@@ -4,16 +4,16 @@ import { authPoints } from "../../utils/constants";
 const DefaultAuthPage = () => {
   return (
     <div>
-      <Card className="w-full border-none shadow-none rounded-none">
+      <Card className="w-full rounded-none">
         <CardHeader className="lg:px-28 md:px-16 sm:px-10 xl:px-44 pt-32 max-sm:items-center">
           <CardTitle className="sm:text-5xl text-3xl xl:text-6xl font-bold text-orange-600">
             Robust Authentication and Authorization
           </CardTitle>
           <div className="max-sm:py-2 py-3"></div>
-          <div className="flex max-lg:flex-col justify-evenly">
+          <div className="flex-col justify-evenly">
             {authPoints.map((point, index) => (
               <Card
-                className="hover:bg-accent hover:text-accent-foreground max-lg:mr-0 max-lg:mb-5 mr-5"
+                className="hover:bg-accent hover:text-accent-foreground mb-5"
                 key={index}
               >
                 <div className=" flex items-center space-x-4 rounded-md ">

@@ -14,10 +14,12 @@ import DefaultPassGenPage from "./DefaultPassGenPage";
 import DefaultPassStrPage from "./DefaultPassStrPage";
 import DefaultPassSharingPage from "./DefaultPassSharingPage";
 import DefaultAuditPage from "./DefaultAuditPage";
+import { useNavigate } from "react-router-dom";
 
 const DefaultPage = () => {
+  const navigate = useNavigate();
   return (
-    <div className="">
+    <div className="w-full">
       <div className="fixed w-full bg-white dark:bg-card">
         <DefaultNavBar />
       </div>
@@ -32,46 +34,52 @@ const DefaultPage = () => {
               authentication, robust password vaults, and seamless sharing - all
               with unwavering security.
             </CardDescription>
-            <div className="flex">
+            <div className="flex py-5">
               <Button
                 variant="secondary"
                 className="border-orange-600 text-orange-600 max-sm:text-base text-xl"
+                onClick={() => navigate("/signUp")}
               >
                 Get Started Now
               </Button>
               <div className="max-sm:px-2 px-5"></div>
-              <Button
-                variant="outline"
-                className="border-orange-600 text-orange-600 max-sm:text-base text-xl"
-              >
-                Explore the Features
-              </Button>
+              <a href="#page1">
+                <Button
+                  variant="outline"
+                  className="border-orange-600 text-orange-600 max-sm:text-base text-xl"
+                >
+                  Explore the Features
+                </Button>
+              </a>
             </div>
+            <div className="py-5"></div>
           </CardHeader>
         </Card>
       </div>
-      <div>
+      <div id="page1">
         <DefaultAuthPage />
       </div>
-      {/* <div>
+      <div id="page2">
         <DefaultPassVaultPage />
       </div>
-      <div>
+      <div id="page3">
         <DefaultDigiWalletPage />
       </div>
-      <div>
+      <div id="page4">
         <DefaultPassGenPage />
       </div>
-      <div>
+      <div id="page5">
         <DefaultPassStrPage />
       </div>
-      <div>
+      <div id="page6">
         <DefaultPassSharingPage />
       </div>
-      <div>
+      <div id="page7">
         <DefaultAuditPage />
       </div>
-      <DefaultFooter /> */}
+      <div>
+        <DefaultFooter />
+      </div>
     </div>
   );
 };

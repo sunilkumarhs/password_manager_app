@@ -5,30 +5,29 @@ import { Button } from "@/components/ui/button";
 const DefaultPassGenPage = () => {
   return (
     <div>
-      <Card className="w-full flex justify-center rounded-none h-screen">
-        <CardHeader className="px-44 pt-32">
-          <CardTitle className="text-6xl font-bold text-orange-600">
+      <Card className="w-full rounded-none">
+        <CardHeader className="lg:px-28 md:px-16 sm:px-10 xl:px-44 pt-32 max-sm:items-center">
+          <CardTitle className="sm:text-5xl text-3xl xl:text-6xl font-bold text-orange-600">
             Intelligent Password Generator
           </CardTitle>
-          <div className="py-3"></div>
-          <div className="flex flex-wrap justify-evenly">
+          <div className="max-sm:py-3 py-5"></div>
+          <div className="flex max-sm:flex-col flex-wrap justify-evenly">
             {passGenPoints.map((point, index) => (
               <Card
-                className="border-none shadow-none hover:bg-accent hover:text-accent-foreground w-1/2"
+                className={`hover:bg-accent hover:text-accent-foreground max-sm:mb-5 max-sm:w-full w-1/2 `}
                 key={index}
               >
-                <div className=" flex items-center space-x-4 rounded-md p-3">
+                <div className="flex sm:flex-col lg:flex-row items-center space-x-4 rounded-md px-3 max-sm:py-0 py-2">
                   <Button
                     variant="outline"
-                    className="text-xl font-bold text-orange-600"
+                    className="max-sm:text-lg text-xl font-bold text-orange-600"
                   >
                     {index + 1}
                   </Button>
                   <CardHeader>
-                    <CardTitle className="text-xl font-bold text-orange-600">
+                    <CardTitle className="max-sm:text-lg text-xl font-bold text-orange-600">
                       {point.title}
                     </CardTitle>
-                    <div className=""></div>
                     <CardTitle className="text-sm text-muted-foreground">
                       {point.content}
                     </CardTitle>

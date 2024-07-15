@@ -178,31 +178,31 @@ export const securePassLinks = [
     content: [
       {
         linkName: "SecurePassAuthenticator",
-        path: "",
+        path: "#page1",
       },
       {
         linkName: "Password Vault",
-        path: "",
+        path: "#page2",
       },
       {
         linkName: "Digital Wallet",
-        path: "",
+        path: "#page3",
       },
       {
         linkName: "Password Generator",
-        path: "",
+        path: "#page4",
       },
       {
         linkName: "Password Manager",
-        path: "",
+        path: "#page5",
       },
       {
         linkName: "Password Sharing",
-        path: "",
+        path: "#page6",
       },
       {
         linkName: "Dark Web Monitoring",
-        path: "",
+        path: "#page7",
       },
     ],
   },
