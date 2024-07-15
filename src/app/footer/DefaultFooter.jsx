@@ -2,13 +2,24 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import logo from "../../assets/appLogo.png";
 import { IoLogoLinkedin, IoLogoYoutube } from "react-icons/io";
 import { FaInstagramSquare, FaTwitterSquare } from "react-icons/fa";
+import { BsGlobeCentralSouthAsia } from "react-icons/bs";
 import {
   Accordion,
   AccordionContent,
   AccordionItem,
   AccordionTriggerRotate,
 } from "@/components/ui/accordion";
-import { securePassLinks } from "@/utils/constants";
+import {
+  Select,
+  SelectContent,
+  SelectGroup,
+  SelectItem,
+  SelectLabel,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import { securePassLinks, footerLinks } from "@/utils/constants";
+import { Link } from "react-router-dom";
 
 const DefaultFooter = () => {
   return (
@@ -41,7 +52,7 @@ const DefaultFooter = () => {
                 {link.content.map((name, index) => (
                   <p
                     key={index}
-                    className="text-orange-600 hover:underline pb-1 cursor-pointer"
+                    className="hover:text-orange-600 hover:underline pb-1 cursor-pointer"
                   >
                     {name.linkName}
                   </p>
@@ -50,6 +61,44 @@ const DefaultFooter = () => {
             </AccordionItem>
           </Accordion>
         ))}
+      </div>
+      <div className="flex justify-center py-3">
+        <div>
+          <div className="flex justify-evenly">
+            {footerLinks.map((link, index) => (
+              <Link
+                key={index}
+                className="px-5 hover:text-orange-600 hover:underline"
+              >
+                {link.linkName}
+              </Link>
+            ))}
+          </div>
+          <div className="flex justify-center py-2">
+            <Link className="hover:text-orange-600 hover:underline">
+              © 2024 LastPass US LP. All rights reserved.
+            </Link>
+          </div>
+          <div className="py-2"></div>
+          <div className="flex justify-center">
+            <Select defaultValue="english">
+              <SelectTrigger className="w-[180px] transition-all [&[data-state=open]>svg]:rotate-[360deg] hover:text-orange-600">
+                <BsGlobeCentralSouthAsia className="text-2xl text-orange-600 transition-transform duration-500" />
+                <SelectValue />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectGroup>
+                  <SelectLabel>Languages</SelectLabel>
+                  <SelectItem value="english">English</SelectItem>
+                  <SelectItem value="hinidi">Hindi</SelectItem>
+                  <SelectItem value="kannada">Kannada</SelectItem>
+                  <SelectItem value="japanese">Japanese</SelectItem>
+                  <SelectItem value="french">French</SelectItem>
+                </SelectGroup>
+              </SelectContent>
+            </Select>
+          </div>
+        </div>
       </div>
     </div>
   );

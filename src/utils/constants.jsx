@@ -98,6 +98,16 @@ export const encPassPoints = [
     content:
       "Our security practices are constantly reviewed and improved to keep pace with the evolving threat landscape.",
   },
+  {
+    title: "Seamless Password Management",
+    content:
+      "Easily store, retrieve, and share your passwords across all your devices, while maintaining the highest levels of security.",
+  },
+  {
+    title: "Proactive Security Monitoring",
+    content:
+      "Receive real-time alerts and notifications about potential security threats, allowing you to stay one step ahead of cybercriminals.",
+  },
 ];
 
 export const sharingPassPoints = [
@@ -228,5 +238,28 @@ export const securePassLinks = [
         path: "",
       },
     ],
+  },
+];
+
+export const footerLinks = [
+  {
+    linkName: "Privacy",
+    path: "",
+  },
+  {
+    linkName: "Terms of Service",
+    path: "",
+  },
+  {
+    linkName: "Imprint",
+    path: "",
+  },
+  {
+    linkName: "Cookies Preferences",
+    path: "",
+  },
+  {
+    linkName: "Your Privacy Choices",
+    path: "",
   },
 ];
