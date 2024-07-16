@@ -40,13 +40,13 @@
       --foreground: 0 0% 98%;
       --card:240,10.3%,15.3%;
       --card-foreground: 0 0% 98%;
-      --popover: 240 10% 3.9%;
+      --popover: 240,10.3%,15.3%;
       --popover-foreground: 0 0% 98%;
       --primary: 0 0% 98%;
       --primary-foreground: 240 5.9% 10%;
       --secondary: 240,9.9%,21.8%;
       --secondary-foreground: 0 0% 98%;
-      --muted: 240 3.7% 15.9%;
+      --muted: 240,10.2%,34.5%;
       --muted-foreground: 240 5% 64.9%;
       --accent:240,9.9%,21.8%;
       --accent-foreground: 0 0% 98%;

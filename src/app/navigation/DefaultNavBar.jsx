@@ -17,6 +17,9 @@ import { Label } from "@/components/ui/label";
 
 const DefaultNavBar = () => {
   const navigate = useNavigate();
+  const signInHandler = () => {
+    navigate("/dashBoard");
+  };
   return (
     <div className="border-b-2 px-4 shadow-md flex justify-between items-center">
       <div className="flex">
@@ -77,7 +80,11 @@ const DefaultNavBar = () => {
                 SignUp
               </Button>
               <div className="max-sm:py-2"></div>
-              <Button type="submit" className="bg-orange-600">
+              <Button
+                type="submit"
+                className="bg-orange-600"
+                onClick={signInHandler}
+              >
                 SignIn
               </Button>
             </DialogFooter>

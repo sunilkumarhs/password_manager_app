@@ -6,28 +6,28 @@ export const components = [
   {
     title: "Share-Passwords",
     href: "",
-    logo: <FaRegShareSquare />,
+    logo: <FaRegShareSquare className="text-orange-600" />,
     description:
       "Share your passwords with trusted person for access granting and view the shared passwords.",
   },
   {
     title: "Secure-Info",
     href: "",
-    logo: <FaNoteSticky />,
+    logo: <FaNoteSticky className="text-orange-600" />,
     description:
       "Secure your secret or important information like notes, address, etc..",
   },
   {
     title: "Payment-Cards",
     href: "",
-    logo: <FaRegCreditCard />,
+    logo: <FaRegCreditCard className="text-orange-600" />,
     description:
       "Adding payment cards info for secure transaction and confidentiality",
   },
   {
     title: "Bank-Accounts",
     href: "",
-    logo: <MdAccountBalance />,
+    logo: <MdAccountBalance className="text-orange-600" />,
     description:
       "Adding the bank deatails like acc-number, ifsc-code and other deatils to secure data.",
   },
