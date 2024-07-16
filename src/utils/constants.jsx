@@ -2,6 +2,10 @@ import { FaRegCreditCard, FaRegShareSquare } from "react-icons/fa";
 import { FaNoteSticky } from "react-icons/fa6";
 import { MdAccountBalance } from "react-icons/md";
 
+
+export const emailRegex = new RegExp(
+  "^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+.[a-zA-Z]{2,}$"
+);
 export const components = [
   {
     title: "Share-Passwords",

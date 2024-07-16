@@ -3,6 +3,7 @@ import DefaultPage from "./defaultSection/DefaultPage";
 import SignUp from "./authentication/SignUp";
 import SignIn from "./authentication/SignIn";
 import DashBoard from "./mainSection/DashBoard";
+import VerifcationPage from "./authentication/VerifcationPage";
 
 const Body = () => {
   const appRouter = createBrowserRouter([
@@ -17,6 +18,10 @@ const Body = () => {
     {
       path: "/signIn",
       element: <SignIn />,
+    },
+    {
+      path: "/verify",
+      element: <VerifcationPage />,
     },
     { path: "/dashBoard", element: <DashBoard /> },
   ]);

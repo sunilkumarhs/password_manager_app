@@ -13,13 +13,52 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
+import { z } from "zod";
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from "@/components/ui/form";
+import { useToast } from "@/components/ui/use-toast";
+import { emailRegex } from "@/utils/constants";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+
+const FormSchema = z.object({
+  email: z.string().regex(emailRegex, {
+    message: "Invalid email address",
+  }),
+  password: z.string().min(5, {
+    message: "Your password must be atleast 5 characters.",
+  }),
+});
 
 const DefaultNavBar = () => {
   const navigate = useNavigate();
-  const signInHandler = () => {
-    navigate("/dashBoard");
-  };
+  const { toast } = useToast();
+  const form = useForm({
+    resolver: zodResolver(FormSchema),
+    defaultValues: { email: "", password: "" },
+  });
+
+  function onSubmit() {
+    toast({
+      title: "verification Successfull!",
+      description: (
+        <div className="mt-2 w-[340px] rounded-md bg-slate-700 p-4">
+          <p>Your email and master-password is verfied successfully!</p>
+          <p className="text-bold">
+            Enter the verification code send to email-address.
+          </p>
+          <p className="text-bold">To complete the 2-step-authentication</p>
+        </div>
+      ),
+    });
+    navigate("/verify");
+  }
   return (
     <div className="border-b-2 px-4 shadow-md flex justify-between items-center">
       <div className="flex">
@@ -31,13 +70,6 @@ const DefaultNavBar = () => {
       <div className="flex items-center">
         <ModeToggle />
         <div className="px-2"></div>
-        {/* <Button
-          variant="outline"
-          className="border-orange-600 text-orange-600"
-          onClick={() => navigate("/signUP")}
-        >
-          SignIn
-        </Button> */}
         <Dialog>
           <DialogTrigger asChild>
             <Button
@@ -57,36 +89,71 @@ const DefaultNavBar = () => {
                 account
               </DialogDescription>
             </DialogHeader>
-            <div className="grid gap-4 py-4">
-              <div className="grid grid-cols-4 items-center gap-4">
-                <Label htmlFor="email" className="text-right">
-                  Email
-                </Label>
-                <Input id="email" type="email" className="col-span-3" />
-              </div>
-              <div className="grid grid-cols-4 items-center gap-4">
-                <Label htmlFor="password" className="text-right">
-                  Master-Password
-                </Label>
-                <Input id="password" type="password" className="col-span-3" />
-              </div>
-            </div>
-            <DialogFooter className="sm:justify-between">
-              <Button
-                type="submit"
-                className="bg-orange-600"
-                onClick={() => navigate("/signUp")}
+            <Form {...form}>
+              <form
+                onSubmit={form.handleSubmit(onSubmit)}
+                className="w-full space-y-6 border-2 border-zinc-400 rounded-md p-4"
               >
-                SignUp
-              </Button>
-              <div className="max-sm:py-2"></div>
-              <Button
-                type="submit"
-                className="bg-orange-600"
-                onClick={signInHandler}
-              >
-                SignIn
-              </Button>
+                <FormField
+                  control={form.control}
+                  name="email"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel className="text-orange-600 text-xl">
+                        Email
+                      </FormLabel>
+                      <FormControl>
+                        <Input
+                          id="email"
+                          type="email"
+                          className="col-span-3"
+                          {...field}
+                        />
+                      </FormControl>
+                      <FormMessage className="text-red-600" />
+                    </FormItem>
+                  )}
+                />
+                <FormField
+                  control={form.control}
+                  name="password"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel className="text-orange-600 text-xl">
+                        Master-Password
+                      </FormLabel>
+                      <FormControl>
+                        <Input
+                          id="password"
+                          type="password"
+                          className="col-span-3"
+                          {...field}
+                        />
+                      </FormControl>
+                      <FormMessage className="text-red-600" />
+                    </FormItem>
+                  )}
+                />
+
+                <Button
+                  type="submit"
+                  variant="outline"
+                  className="text-orange-600 border-orange-600"
+                >
+                  SignIn
+                </Button>
+              </form>
+            </Form>
+            <DialogFooter className="sm:justify-center">
+              <p>
+                Don&apos;t have an account?{" "}
+                <span
+                  className="underline hover:text-orange-600 cursor-pointer"
+                  onClick={() => navigate("/signUp")}
+                >
+                  Sign up
+                </span>
+              </p>
             </DialogFooter>
           </DialogContent>
         </Dialog>
