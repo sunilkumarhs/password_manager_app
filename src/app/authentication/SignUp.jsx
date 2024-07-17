@@ -5,12 +5,14 @@ import {
   CardTitle,
   CardContent,
 } from "@/components/ui/card";
+import { FaEye } from "react-icons/fa";
+import { FaEyeSlash } from "react-icons/fa";
 import DefaultNavBar from "../navigation/DefaultNavBar";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { ReloadIcon } from "@radix-ui/react-icons";
 import { useNavigate } from "react-router-dom";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import signUpImg from "../../assets/signupImage.png";
 import { z } from "zod";
 import {
@@ -21,17 +23,19 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { useToast } from "@/components/ui/use-toast";
-import { emailRegex } from "@/utils/constants";
+import { emailRegex, passwordRegex } from "@/utils/constants";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-
+import { Progress } from "@/components/ui/progress";
 const FormSchema = z.object({
   email: z.string().regex(emailRegex, {
     message: "Invalid email address",
   }),
-  password: z.string().min(5, {
-    message: "Your password must be atleast 5 characters.",
-  }),
+  password: z
+    .string()
+    .regex(/^(?=.[0-9])(?=.[a-z])(?=.[A-Z])(?=.W)(?!.* ).{8,16}$/, {
+      message: "Invalid password address",
+    }),
   cnfPassword: z.string().min(5, {
     message: "Password isn't matching with above password!",
   }),
@@ -46,6 +50,14 @@ const SignUp = () => {
     defaultValues: { email: "", password: "", cnfPassword: "", reminder: "" },
   });
   const [disable, setDisable] = useState(false);
+  const [toggle1, setToggle1] = useState(false);
+  const [toggle2, setToggle2] = useState(false);
+  const [progress, setProgress] = useState(13);
+
+  useEffect(() => {
+    const timer = setTimeout(() => setProgress(0), 500);
+    return () => clearTimeout(timer);
+  }, []);
 
   function onSubmit(data) {
     if (data.password !== data.cnfPassword) {
@@ -77,7 +89,7 @@ const SignUp = () => {
             <img src={signUpImg} alt="SignUpImage" />
           </div>
         </Card>
-        <Card className="max-md:w-full w-1/2 h-full border-none shadow-none rounded-none p-2">
+        <Card className="max-md:w-full w-1/2 h-full border-none shadow-none rounded-none ">
           <CardHeader className=" md:px-5 lg:px-24 xl:px-32 pt-20 items-center">
             <CardTitle className="text-2xl font-bold text-orange-600">
               Create an account
@@ -89,7 +101,7 @@ const SignUp = () => {
             <Form {...form}>
               <form
                 onSubmit={form.handleSubmit(onSubmit)}
-                className="w-full space-y-6 py-1"
+                className="w-full space-y-5 py-1"
               >
                 <FormField
                   control={form.control}
@@ -126,11 +138,29 @@ const SignUp = () => {
                             {...field}
                           />
                         ) : (
-                          <Input
-                            type="password"
-                            placeholder="Master-Password"
-                            {...field}
-                          />
+                          <div>
+                            <div className="flex">
+                              <Input
+                                type={toggle1 ? "text" : "password"}
+                                placeholder="Master-Password"
+                                {...field}
+                              />
+                              <span
+                                className="flex justify-center mt-2"
+                                onClick={() => setToggle1(!toggle1)}
+                              >
+                                {toggle1 ? (
+                                  <FaEye className="absolute text-xl mr-10 cursor-pointer" />
+                                ) : (
+                                  <FaEyeSlash className="absolute text-xl mr-10 cursor-pointer" />
+                                )}
+                              </span>
+                            </div>
+                            <div className="flex items-center pt-3">
+                              <Progress value={progress} className="w-[100%]" />
+                              <p className="text-sm px-1 -mt-1">Strength</p>
+                            </div>
+                          </div>
                         )}
                       </FormControl>
                       <FormMessage className="text-red-600" />
@@ -151,11 +181,23 @@ const SignUp = () => {
                             {...field}
                           />
                         ) : (
-                          <Input
-                            type="password"
-                            placeholder="Confirm Master-Password"
-                            {...field}
-                          />
+                          <div className="flex">
+                            <Input
+                              type={toggle2 ? "text" : "password"}
+                              placeholder="Confirm Master-Password"
+                              {...field}
+                            />
+                            <span
+                              className="flex justify-center mt-2"
+                              onClick={() => setToggle2(!toggle2)}
+                            >
+                              {toggle2 ? (
+                                <FaEye className="absolute text-xl mr-10 cursor-pointer" />
+                              ) : (
+                                <FaEyeSlash className="absolute text-xl mr-10 cursor-pointer" />
+                              )}
+                            </span>
+                          </div>
                         )}
                       </FormControl>
                       <FormMessage className="text-red-600" />
