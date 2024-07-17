@@ -7,8 +7,13 @@ export const emailRegex = new RegExp(
   "^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+.[a-zA-Z]{2,}$"
 );
 export const passwordRegex = new RegExp(
-  "/^(?=.[0-9])(?=.[a-z])(?=.[A-Z])(?=.W)(?!.* ).{8,16}$/"
+  /^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{12,}$/
 );
+export const lowerCaseRegex = new RegExp(/[a-z]/);
+export const upperCaseRegex = new RegExp(/[A-Z]/);
+export const numberRegex = new RegExp(/[0-9]/);
+export const specialRegex = new RegExp(/[!@#$%^&*()\-+={}[\]:;"'<>,.?/|\\]/);
+
 export const components = [
   {
     title: "Share-Passwords",
