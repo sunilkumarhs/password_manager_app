@@ -23,7 +23,7 @@ export const components = [
       "Share your passwords with trusted person for access granting and view the shared passwords.",
   },
   {
-    title: "Secure-Info",
+    title: "Secure-Notes",
     href: "",
     logo: <FaNoteSticky className="text-orange-600" />,
     description:

@@ -47,11 +47,11 @@ const VerifcationPage = () => {
     navigate("/dashBoard");
   }
   return (
-    <div className="w-full h-screen items-center flex justify-center max-sm:px-5">
+    <div className="w-full h-screen items-center flex justify-center max-sm:px-5 ">
       <Form {...form}>
         <form
           onSubmit={form.handleSubmit(onSubmit)}
-          className="max-sm:w-full w-1/2 space-y-6 border-2 border-zinc-400 rounded-md p-4"
+          className="max-sm:w-full w-1/2 space-y-6 border-2 rounded-md p-4 shadow-2xl"
         >
           <FormField
             control={form.control}

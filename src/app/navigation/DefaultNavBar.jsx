@@ -92,7 +92,7 @@ const DefaultNavBar = () => {
             <Form {...form}>
               <form
                 onSubmit={form.handleSubmit(onSubmit)}
-                className="w-full space-y-6 border-2 border-zinc-400 rounded-md p-4"
+                className="w-full space-y-6 border-2 rounded-md p-4"
               >
                 <FormField
                   control={form.control}
