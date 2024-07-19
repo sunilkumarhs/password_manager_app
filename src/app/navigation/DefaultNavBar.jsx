@@ -26,6 +26,8 @@ import { useToast } from "@/components/ui/use-toast";
 import { emailRegex } from "@/utils/constants";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { useState } from "react";
+import { ReloadIcon } from "@radix-ui/react-icons";
 
 const FormSchema = z.object({
   email: z.string().regex(emailRegex, {
@@ -39,12 +41,14 @@ const FormSchema = z.object({
 const DefaultNavBar = () => {
   const navigate = useNavigate();
   const { toast } = useToast();
+  const [disable, setDisable] = useState(false);
   const form = useForm({
     resolver: zodResolver(FormSchema),
     defaultValues: { email: "", password: "" },
   });
 
   function onSubmit() {
+    setDisable(true);
     toast({
       title: "verification Successfull!",
       description: (
@@ -104,6 +108,7 @@ const DefaultNavBar = () => {
                       </FormLabel>
                       <FormControl>
                         <Input
+                          disabled={disable}
                           id="email"
                           type="email"
                           className="col-span-3"
@@ -124,6 +129,7 @@ const DefaultNavBar = () => {
                       </FormLabel>
                       <FormControl>
                         <Input
+                          disabled={disable}
                           id="password"
                           type="password"
                           className="col-span-3"
@@ -136,11 +142,19 @@ const DefaultNavBar = () => {
                 />
 
                 <Button
+                  disabled={disable}
                   type="submit"
                   variant="outline"
                   className="text-orange-600 border-orange-600"
                 >
-                  SignIn
+                  {disable ? (
+                    <>
+                      <ReloadIcon className="mr-2 h-4 w-4 animate-spin" />
+                      SigningIn Please Wait!
+                    </>
+                  ) : (
+                    "SignIn"
+                  )}
                 </Button>
               </form>
             </Form>

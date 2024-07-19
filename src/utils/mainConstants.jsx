@@ -42,7 +42,7 @@ export const riskData = [
   {
     title: "At-risk passwords",
     count: "0",
-    link: "View passwords",
+    link: "ViewPasswords",
     description:
       "Passwords in your vault that are unsafe because they are weak, missing or reused on multiple sites",
   },
@@ -67,4 +67,19 @@ export const riskData = [
     description:
       "The number of devices that you've allowed to be used to access your securepass account.",
   },
+];
+
+export const months = [
+  "01-January",
+  "02-February",
+  "03-March",
+  "04-April",
+  "05-May",
+  "06-June",
+  "07-July",
+  "08-August",
+  "09-September",
+  "10-October",
+  "11-November",
+  "12-December",
 ];

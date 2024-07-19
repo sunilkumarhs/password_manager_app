@@ -62,13 +62,6 @@ const MainNavBar = () => {
                   Security-Dashboard
                 </NavigationMenuLink>
               </NavigationMenuItem>
-              {/* <NavigationMenuItem>
-                <NavigationMenuLink
-                  className={`${navigationMenuTriggerStyle()} hover:text-orange-600`}
-                >
-                  Add-Password
-                </NavigationMenuLink>
-              </NavigationMenuItem> */}
               <NavigationMenuItem>
                 <NavigationMenuLink
                   className={`${navigationMenuTriggerStyle()} hover:text-orange-600`}

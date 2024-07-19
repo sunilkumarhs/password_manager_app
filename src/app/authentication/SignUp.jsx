@@ -24,7 +24,7 @@ import { useToast } from "@/components/ui/use-toast";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Progress } from "@/components/ui/progress";
-import { FormSchema } from "@/utils/formSchema";
+import { SignUpFormSchema } from "@/utils/formSchema";
 import progessValidate from "@/utils/progressValidate";
 
 const SignUp = () => {
@@ -36,7 +36,7 @@ const SignUp = () => {
   const [pass, setPass] = useState("");
 
   const form = useForm({
-    resolver: zodResolver(FormSchema),
+    resolver: zodResolver(SignUpFormSchema),
     defaultValues: { email: "", password: "", cnfPassword: "", reminder: "" },
   });
 
@@ -186,16 +186,16 @@ const SignUp = () => {
                     </FormItem>
                   )}
                 />
-                {disable ? (
-                  <Button disabled className="bg-orange-600 w-full">
-                    <ReloadIcon className="mr-2 h-4 w-4 animate-spin" />
-                    SigningUp Please Wait!
-                  </Button>
-                ) : (
-                  <Button type="submit" className="bg-orange-600 w-full">
-                    SignUp
-                  </Button>
-                )}
+                <Button type="submit" className="bg-orange-600 w-full">
+                  {disable ? (
+                    <>
+                      <ReloadIcon className="mr-2 h-4 w-4 animate-spin" />
+                      SigningUp Please Wait!
+                    </>
+                  ) : (
+                    "SignUp"
+                  )}
+                </Button>
               </form>
             </Form>
             <div className="py-1"></div>
