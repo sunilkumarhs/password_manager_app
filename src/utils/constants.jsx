@@ -17,28 +17,28 @@ export const specialRegex = new RegExp(/[!@#$%^&*()\-+={}[\]:;"'<>,.?/|\\]/);
 export const components = [
   {
     title: "Share-Passwords",
-    href: "",
+    href: "/sharedPage",
     logo: <FaRegShareSquare className="text-orange-600" />,
     description:
       "Share your passwords with trusted person for access granting and view the shared passwords.",
   },
   {
     title: "Secure-Notes",
-    href: "",
+    href: "/notesPage",
     logo: <FaNoteSticky className="text-orange-600" />,
     description:
       "Secure your secret or important information like notes, address, etc..",
   },
   {
     title: "Payment-Cards",
-    href: "",
+    href: "/cardsPage",
     logo: <FaRegCreditCard className="text-orange-600" />,
     description:
       "Adding payment cards info for secure transaction and confidentiality",
   },
   {
     title: "Bank-Accounts",
-    href: "",
+    href: "/banksPage",
     logo: <MdAccountBalance className="text-orange-600" />,
     description:
       "Adding the bank deatails like acc-number, ifsc-code and other deatils to secure data.",

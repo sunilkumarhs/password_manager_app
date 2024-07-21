@@ -134,7 +134,7 @@ const SecurityAnalysis = () => {
               </RadialBarChart>
             </ChartContainer>
           </div>
-          <div className="py-2 max-sw:py-0 text-sm">
+          <div className="pt-0 max-sw:py-0 text-sm">
             <Table>
               <TableBody>
                 {riskData.map((data, index) => (

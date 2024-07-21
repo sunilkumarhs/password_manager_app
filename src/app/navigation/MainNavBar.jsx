@@ -21,10 +21,7 @@ import {
 } from "@/components/ui/dropdown-menu";
 import {
   Sheet,
-  SheetClose,
   SheetContent,
-  SheetDescription,
-  SheetFooter,
   SheetHeader,
   SheetTitle,
   SheetTrigger,
@@ -42,8 +39,10 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import logo from "../../assets/appLogo.png";
 import { Button } from "@/components/ui/button";
 import { components } from "@/utils/constants";
+import { useNavigate } from "react-router-dom";
 
 const MainNavBar = () => {
+  const navigate = useNavigate();
   return (
     <>
       <div className="max-lg:hidden border-b-2 px-4 shadow-md flex justify-between items-center">
@@ -55,14 +54,14 @@ const MainNavBar = () => {
           <div className="px-1"></div>
           <NavigationMenu>
             <NavigationMenuList>
-              <NavigationMenuItem>
+              <NavigationMenuItem onClick={() => navigate("/dashBoard")}>
                 <NavigationMenuLink
                   className={`${navigationMenuTriggerStyle()} hover:text-orange-600`}
                 >
                   Security-Dashboard
                 </NavigationMenuLink>
               </NavigationMenuItem>
-              <NavigationMenuItem>
+              <NavigationMenuItem onClick={() => navigate("/passwordVault")}>
                 <NavigationMenuLink
                   className={`${navigationMenuTriggerStyle()} hover:text-orange-600`}
                 >
