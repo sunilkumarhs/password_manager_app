@@ -11,7 +11,7 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { ReloadIcon } from "@radix-ui/react-icons";
 import { useNavigate } from "react-router-dom";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import signUpImg from "../../assets/signupImage.png";
 import {
   Form,
@@ -26,9 +26,12 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { Progress } from "@/components/ui/progress";
 import { SignUpFormSchema } from "@/utils/formSchema";
 import progessValidate from "@/utils/progressValidate";
+import api from "@/restApi/scurePass";
+import GlobalContext from "@/contexts/GlobalContext";
 
 const SignUp = () => {
   const navigate = useNavigate();
+  const { setAccessToken } = useContext(GlobalContext);
   const { toast } = useToast();
   const [disable, setDisable] = useState(false);
   const [toggle1, setToggle1] = useState(false);
@@ -44,22 +47,51 @@ const SignUp = () => {
     setProgress(progessValidate(pass));
   }, [pass]);
 
-  function onSubmit() {
+  const onSubmit = async (data) => {
     setDisable(true);
-    toast({
-      title: "verification Successfull!",
-      description: (
-        <div className="mt-2 w-[340px] rounded-md bg-slate-700 p-4">
-          <p>Your email and master-password is verfied successfully!</p>
-          <p className="text-bold">
-            Enter the verification code send to email-address.
-          </p>
-          <p className="text-bold">To complete the 2-step-authentication</p>
-        </div>
-      ),
-    });
-    navigate("/verify");
-  }
+    const formData = {
+      email: data.email,
+      password: data.password,
+      reminder: data.reminder || "none",
+    };
+    try {
+      const response = await api.put("/securepass_server/register", {
+        headers: { "Content-Type": "application/json" },
+        body: formData,
+      });
+      const resData = response.data;
+      console.log(resData);
+      if (response.status === 201) {
+        setAccessToken(resData.otpToken);
+        toast({
+          title: resData.message,
+          description: (
+            <div className="mt-2 w-[340px] rounded-md bg-zinc-400 dark:bg-zinc-700 p-4">
+              <p>Your email and master-password is verfied successfully!</p>
+              <p className="text-bold">
+                Enter the verification code send to email-address.
+              </p>
+              <p className="text-bold">To complete the 2-step-authentication</p>
+            </div>
+          ),
+        });
+        navigate("/verify");
+      }
+    } catch (err) {
+      const errorStatus = err.response.status;
+      const errMessage = err.response.data.message;
+      const errMessage1 = err.response.data.error;
+      setDisable(false);
+      toast({
+        title: "ErrorCode:" + errorStatus,
+        description: (
+          <div className="mt-2 w-[340px] rounded-md bg-zinc-400 dark:bg-zinc-700 p-4">
+            <p>{errMessage || errMessage1}</p>
+          </div>
+        ),
+      });
+    }
+  };
   return (
     <div>
       <div className="fixed w-full bg-white dark:bg-card">
