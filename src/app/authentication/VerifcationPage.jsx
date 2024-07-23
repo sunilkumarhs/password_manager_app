@@ -23,6 +23,7 @@ import { api } from "@/restApi/scurePass";
 import { useContext } from "react";
 import { decryptData } from "@/utils/securingData";
 import { encryptData } from "@/utils/securingData";
+import fetchUser from "@/utils/fetchUser";
 
 const FormSchema = z.object({
   pin: z.string().min(6, {
@@ -32,7 +33,8 @@ const FormSchema = z.object({
 
 const VerifcationPage = () => {
   const navigate = useNavigate();
-  const { setAccessToken, setUserId, setIsAuth } = useContext(GlobalContext);
+  const { setAccessToken, setUserId, setIsAuth, accessToken, userId, setUser } =
+    useContext(GlobalContext);
   const { toast } = useToast();
   const form = useForm({
     resolver: zodResolver(FormSchema),
@@ -58,8 +60,14 @@ const VerifcationPage = () => {
         setAccessToken(encToken);
         const encUserId = encryptData(resData.userId);
         localStorage.setItem("userId", encUserId);
+        const remainingMilliseconds = 60 * 60 * 1000;
+        const expiryDate = new Date(
+          new Date().getTime() + remainingMilliseconds
+        );
+        localStorage.setItem("expiryDate", expiryDate.toISOString());
         setUserId(encUserId);
         setIsAuth(true);
+        fetchUser(userId, accessToken, setUser);
         toast({
           title: resData.message,
           description: (

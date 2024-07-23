@@ -7,6 +7,8 @@ const GlobalContext = createContext({
   setUserId: () => {},
   isAuth: localStorage.getItem("accessToken") ? true : false,
   setIsAuth: () => {},
+  user: null,
+  setUser: () => {},
 });
 
 export default GlobalContext;

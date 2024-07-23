@@ -25,14 +25,18 @@ import { Textarea } from "@/components/ui/textarea";
 import { useToast } from "@/components/ui/use-toast";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { ReloadIcon } from "@radix-ui/react-icons";
 import progessValidate from "@/utils/progressValidate";
 import { Progress } from "@/components/ui/progress";
 import { SiteFormSchema } from "@/utils/formSchema";
+import { api } from "@/restApi/scurePass";
+import GlobalContext from "@/contexts/GlobalContext";
+import { decryptData } from "@/utils/securingData";
 
 const AddPasswords = () => {
   const navigate = useNavigate();
+  const { accessToken } = useContext(GlobalContext);
   const { toast } = useToast();
   const [pass, setPass] = useState("");
   const [progress, setProgress] = useState(0);
@@ -54,18 +58,60 @@ const AddPasswords = () => {
     setProgress(progessValidate(pass));
   }, [pass]);
 
-  function onSubmit() {
+  const onSubmit = async (data) => {
     setDisable(true);
-    toast({
-      title: "verification Successfull!",
-      description: (
-        <div className="mt-2 w-[340px] rounded-md bg-slate-700 p-4">
-          <p>Your data has been stored successfully!</p>
-        </div>
-      ),
-    });
-    navigate("/dashBoard");
-  }
+    const formData = {
+      website: data.url,
+      name: data.name,
+      folder: data.folder,
+      username: data.userName,
+      password: data.password,
+      notes: data.notes,
+    };
+    try {
+      const response = await api.put("/secure_pass/addSite", {
+        headers: {
+          Authorization: "Bearer " + decryptData(accessToken),
+        },
+        body: formData,
+      });
+      const resData = response.data;
+      console.log(resData);
+      if (response.status === 201) {
+        toast({
+          title: resData.message,
+          description: (
+            <div className="mt-2 w-[340px] rounded-md bg-zinc-400 dark:bg-zinc-700 p-4">
+              <p>Your Site with credentials has been stored successfully!</p>
+            </div>
+          ),
+        });
+        navigate("/dashBoard");
+      }
+    } catch (err) {
+      const errorStatus = err.response.status;
+      const errMessage = err.response.data.message;
+      const errMessage1 = err.response.data.error;
+      setDisable(false);
+      toast({
+        title: "ErrorCode:" + errorStatus,
+        description: (
+          <div className="mt-2 w-[340px] rounded-md bg-zinc-400 dark:bg-zinc-700 p-4">
+            <p>{errMessage || errMessage1}</p>
+          </div>
+        ),
+      });
+    }
+    // toast({
+    //   title: "verification Successfull!",
+    //   description: (
+    //     <div className="mt-2 w-[340px] rounded-md bg-slate-700 p-4">
+    //       <p>Your data has been stored successfully!</p>
+    //     </div>
+    //   ),
+    // });
+    // navigate("/dashBoard");
+  };
   return (
     <DialogContent className="max-w-3xl pb-0 max-sm:w-11/12">
       <DialogHeader className="mt-4 py-2 bg-orange-600 px-2">

@@ -10,10 +10,10 @@ export const encryptData = (data) => {
 };
 
 export const decryptData = (encryptedData) => {
-  const decryptedData = AES.decrypt(
-    encryptedData,
-    // eslint-disable-next-line no-undef
-    process.env.SECUREPASS_ENC_KEY
-  ).toString(CryptoJS.enc.Utf8);
+    const decryptedData = AES.decrypt(
+      encryptedData,
+      // eslint-disable-next-line no-undef
+      process.env.SECUREPASS_ENC_KEY
+    ).toString(CryptoJS.enc.Utf8);
   return JSON.parse(decryptedData);
 };
