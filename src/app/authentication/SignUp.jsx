@@ -11,7 +11,7 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { ReloadIcon } from "@radix-ui/react-icons";
 import { useNavigate } from "react-router-dom";
-import { useContext, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import signUpImg from "../../assets/signupImage.png";
 import {
   Form,
@@ -26,12 +26,11 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { Progress } from "@/components/ui/progress";
 import { SignUpFormSchema } from "@/utils/formSchema";
 import progessValidate from "@/utils/progressValidate";
-import api from "@/restApi/scurePass";
-import GlobalContext from "@/contexts/GlobalContext";
+import { api } from "@/restApi/scurePass";
+import { encryptData } from "@/utils/securingData";
 
 const SignUp = () => {
   const navigate = useNavigate();
-  const { setAccessToken } = useContext(GlobalContext);
   const { toast } = useToast();
   const [disable, setDisable] = useState(false);
   const [toggle1, setToggle1] = useState(false);
@@ -46,7 +45,6 @@ const SignUp = () => {
   useEffect(() => {
     setProgress(progessValidate(pass));
   }, [pass]);
-
   const onSubmit = async (data) => {
     setDisable(true);
     const formData = {
@@ -60,9 +58,9 @@ const SignUp = () => {
         body: formData,
       });
       const resData = response.data;
-      console.log(resData);
       if (response.status === 201) {
-        setAccessToken(resData.otpToken);
+        const encToken = encryptData(resData.otpToken);
+        localStorage.setItem("otpToken", encToken);
         toast({
           title: resData.message,
           description: (

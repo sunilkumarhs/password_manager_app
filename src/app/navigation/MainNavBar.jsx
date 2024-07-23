@@ -40,9 +40,27 @@ import logo from "../../assets/appLogo.png";
 import { Button } from "@/components/ui/button";
 import { components } from "@/utils/constants";
 import { useNavigate } from "react-router-dom";
+import GlobalContext from "@/contexts/GlobalContext";
+import { useContext, useEffect } from "react";
 
 const MainNavBar = () => {
   const navigate = useNavigate();
+  const { setAccessToken, setUserId, setIsAuth, isAuth } =
+    useContext(GlobalContext);
+  const logoutHandler = () => {
+    localStorage.removeItem("accessToken");
+    localStorage.removeItem("userId");
+    setIsAuth(false);
+    setAccessToken(null);
+    setUserId(null);
+    navigate("/");
+  };
+  useEffect(() => {
+    if (!isAuth) {
+      navigate("/");
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
   return (
     <>
       <div className="max-lg:hidden border-b-2 px-4 shadow-md flex justify-between items-center">
@@ -130,7 +148,7 @@ const MainNavBar = () => {
                 </DropdownMenuItem>
               </DropdownMenuGroup>
               <DropdownMenuSeparator />
-              <DropdownMenuItem>
+              <DropdownMenuItem onClick={logoutHandler}>
                 Log out
                 <DropdownMenuShortcut>
                   <LuLogOut className="text-lg text-orange-600" />
@@ -155,21 +173,20 @@ const MainNavBar = () => {
             <div className=" w-full flex justify-center">
               <NavigationMenu>
                 <NavigationMenuList className="flex flex-col">
-                  <NavigationMenuItem className="py-1">
+                  <NavigationMenuItem
+                    className="py-1"
+                    onClick={() => navigate("/dashBoard")}
+                  >
                     <NavigationMenuLink
                       className={`${navigationMenuTriggerStyle()} hover:text-orange-600`}
                     >
                       Security-Dashboard
                     </NavigationMenuLink>
                   </NavigationMenuItem>
-                  <NavigationMenuItem className="py-1">
-                    <NavigationMenuLink
-                      className={`${navigationMenuTriggerStyle()} hover:text-orange-600`}
-                    >
-                      Add-Password
-                    </NavigationMenuLink>
-                  </NavigationMenuItem>
-                  <NavigationMenuItem className="py-1">
+                  <NavigationMenuItem
+                    className="py-1"
+                    onClick={() => navigate("/passwordVault")}
+                  >
                     <NavigationMenuLink
                       className={`${navigationMenuTriggerStyle()} hover:text-orange-600`}
                     >
@@ -236,7 +253,7 @@ const MainNavBar = () => {
                     </DropdownMenuItem>
                   </DropdownMenuGroup>
                   <DropdownMenuSeparator />
-                  <DropdownMenuItem>
+                  <DropdownMenuItem onClick={logoutHandler}>
                     Log out
                     <DropdownMenuShortcut>
                       <LuLogOut className="text-lg text-orange-600" />

@@ -18,6 +18,7 @@ import { useNavigate } from "react-router-dom";
 
 const DefaultPage = () => {
   const navigate = useNavigate();
+
   return (
     <div className="w-full">
       <div className="fixed w-full bg-white dark:bg-card">

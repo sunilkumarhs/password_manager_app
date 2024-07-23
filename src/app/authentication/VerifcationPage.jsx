@@ -19,8 +19,10 @@ import {
 import { useToast } from "@/components/ui/use-toast";
 import { useNavigate } from "react-router-dom";
 import GlobalContext from "@/contexts/GlobalContext";
-import api from "@/restApi/scurePass";
+import { api } from "@/restApi/scurePass";
 import { useContext } from "react";
+import { decryptData } from "@/utils/securingData";
+import { encryptData } from "@/utils/securingData";
 
 const FormSchema = z.object({
   pin: z.string().min(6, {
@@ -30,28 +32,34 @@ const FormSchema = z.object({
 
 const VerifcationPage = () => {
   const navigate = useNavigate();
-  const { accessToken, setAccessToken, setUserId } = useContext(GlobalContext);
+  const { setAccessToken, setUserId, setIsAuth } = useContext(GlobalContext);
   const { toast } = useToast();
   const form = useForm({
     resolver: zodResolver(FormSchema),
     defaultValues: { pin: "" },
   });
-
   const onSubmit = async (data) => {
+    const dectoken = decryptData(localStorage.getItem("otpToken"));
     const formData = {
       otp: data.pin,
-      otpToken: accessToken,
+      otpToken: dectoken,
     };
     try {
-      const response = await api.put("/securepass_server/verifyOtp", {
+      const response = await api.post("/securepass_server/verifyOtp", {
         headers: { "Content-Type": "application/json" },
         body: formData,
       });
       const resData = response.data;
       console.log(resData);
       if (response.status === 200) {
-        setAccessToken(resData.token);
-        setUserId(resData.userId);
+        localStorage.removeItem("otpToken");
+        const encToken = encryptData(resData.token);
+        localStorage.setItem("accessToken", encToken);
+        setAccessToken(encToken);
+        const encUserId = encryptData(resData.userId);
+        localStorage.setItem("userId", encUserId);
+        setUserId(encUserId);
+        setIsAuth(true);
         toast({
           title: resData.message,
           description: (
@@ -66,7 +74,6 @@ const VerifcationPage = () => {
       const errorStatus = err.response.status;
       const errMessage = err.response.data.message;
       const errMessage1 = err.response.data.error;
-      setDisable(false);
       toast({
         title: "ErrorCode:" + errorStatus,
         description: (

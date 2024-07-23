@@ -2,8 +2,13 @@
 import { useState } from "react";
 import GlobalContext from "./GlobalContext";
 const ContextWrapper = (props) => {
-  const [accessToken, setAccessToken] = useState(null);
-  const [userId, setUserId] = useState(null);
+  const [accessToken, setAccessToken] = useState(
+    localStorage.getItem("accessToken") || null
+  );
+  const [userId, setUserId] = useState(localStorage.getItem("userId") || null);
+  const [isAuth, setIsAuth] = useState(
+    localStorage.getItem("accessToken") ? true : false
+  );
   return (
     <GlobalContext.Provider
       value={{
@@ -11,6 +16,8 @@ const ContextWrapper = (props) => {
         setAccessToken,
         userId,
         setUserId,
+        isAuth,
+        setIsAuth,
       }}
     >
       {props.children}

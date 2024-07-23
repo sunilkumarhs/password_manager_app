@@ -28,6 +28,10 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useState } from "react";
 import { ReloadIcon } from "@radix-ui/react-icons";
+import { api } from "@/restApi/scurePass";
+import { encryptData } from "@/utils/securingData";
+import { useContext, useEffect } from "react";
+import GlobalContext from "@/contexts/GlobalContext";
 
 const FormSchema = z.object({
   email: z.string().regex(emailRegex, {
@@ -42,27 +46,62 @@ const DefaultNavBar = () => {
   const navigate = useNavigate();
   const { toast } = useToast();
   const [disable, setDisable] = useState(false);
+  const { isAuth } = useContext(GlobalContext);
+  useEffect(() => {
+    if (isAuth) {
+      navigate("/dashBoard");
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
   const form = useForm({
     resolver: zodResolver(FormSchema),
     defaultValues: { email: "", password: "" },
   });
 
-  function onSubmit() {
+  const onSubmit = async (data) => {
     setDisable(true);
-    toast({
-      title: "verification Successfull!",
-      description: (
-        <div className="mt-2 w-[340px] rounded-md bg-slate-700 p-4">
-          <p>Your email and master-password is verfied successfully!</p>
-          <p className="text-bold">
-            Enter the verification code send to email-address.
-          </p>
-          <p className="text-bold">To complete the 2-step-authentication</p>
-        </div>
-      ),
-    });
-    navigate("/verify");
-  }
+    const formData = {
+      email: data.email,
+      password: data.password,
+    };
+    try {
+      const response = await api.post("/securepass_server/login", {
+        headers: { "Content-Type": "application/json" },
+        body: formData,
+      });
+      const resData = response.data;
+      if (response.status === 201) {
+        const encToken = encryptData(resData.otpToken);
+        localStorage.setItem("otpToken", encToken);
+        toast({
+          title: resData.message,
+          description: (
+            <div className="mt-2 w-[340px] rounded-md bg-zinc-400 dark:bg-zinc-700 p-4">
+              <p>Your email and master-password is verfied successfully!</p>
+              <p className="text-bold">
+                Enter the verification code send to email-address.
+              </p>
+              <p className="text-bold">To complete the 2-step-authentication</p>
+            </div>
+          ),
+        });
+        navigate("/verify");
+      }
+    } catch (err) {
+      const errorStatus = err.response.status;
+      const errMessage = err.response.data.message;
+      const errMessage1 = err.response.data.error;
+      setDisable(false);
+      toast({
+        title: "ErrorCode:" + errorStatus,
+        description: (
+          <div className="mt-2 w-[340px] rounded-md bg-zinc-400 dark:bg-zinc-700 p-4">
+            <p>{errMessage || errMessage1}</p>
+          </div>
+        ),
+      });
+    }
+  };
   return (
     <div className="border-b-2 px-4 shadow-md flex justify-between items-center">
       <div className="flex">
