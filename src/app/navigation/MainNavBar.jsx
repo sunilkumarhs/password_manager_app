@@ -39,12 +39,13 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import logo from "../../assets/appLogo.png";
 import { Button } from "@/components/ui/button";
 import { components } from "@/utils/constants";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import GlobalContext from "@/contexts/GlobalContext";
 import { useContext, useEffect } from "react";
 
 const MainNavBar = () => {
   const navigate = useNavigate();
+  let location = useLocation();
   const { setAccessToken, setUserId, setIsAuth, isAuth } =
     useContext(GlobalContext);
   const logoutHandler = () => {
@@ -64,7 +65,10 @@ const MainNavBar = () => {
     <>
       <div className="max-lg:hidden border-b-2 px-4 shadow-md flex justify-between items-center">
         <div className="flex">
-          <Avatar className="h-16 w-16">
+          <Avatar
+            className="h-16 w-16 bg-white"
+            onClick={() => navigate("/dashBoard")}
+          >
             <AvatarImage src={logo} alt="@shadcn" />
             <AvatarFallback>CN</AvatarFallback>
           </Avatar>
@@ -73,14 +77,18 @@ const MainNavBar = () => {
             <NavigationMenuList>
               <NavigationMenuItem onClick={() => navigate("/dashBoard")}>
                 <NavigationMenuLink
-                  className={`${navigationMenuTriggerStyle()} hover:text-orange-600`}
+                  className={`${navigationMenuTriggerStyle()} hover:text-orange-600 ${
+                    location.pathname === "/dashBoard" && "text-orange-600"
+                  }`}
                 >
                   Security-Dashboard
                 </NavigationMenuLink>
               </NavigationMenuItem>
               <NavigationMenuItem onClick={() => navigate("/passwordVault")}>
                 <NavigationMenuLink
-                  className={`${navigationMenuTriggerStyle()} hover:text-orange-600`}
+                  className={`${navigationMenuTriggerStyle()} hover:text-orange-600 ${
+                    location.pathname === "/passwordVault" && "text-orange-600"
+                  }`}
                 >
                   Password Vault
                 </NavigationMenuLink>
@@ -93,7 +101,15 @@ const MainNavBar = () => {
                 </NavigationMenuLink>
               </NavigationMenuItem>
               <NavigationMenuItem>
-                <NavigationMenuTrigger className="hover:text-orange-600 focus:text-orange-600">
+                <NavigationMenuTrigger
+                  className={`hover:text-orange-600 focus:text-orange-600 ${
+                    location.pathname === "/sharedPage" && "text-orange-600"
+                  } ${
+                    location.pathname === "/notesPage" && "text-orange-600"
+                  } ${
+                    location.pathname === "/cardsPage" && "text-orange-600"
+                  } ${location.pathname === "/banksPage" && "text-orange-600"}`}
+                >
                   More
                 </NavigationMenuTrigger>
                 <NavigationMenuContent>
@@ -104,7 +120,10 @@ const MainNavBar = () => {
                         logo={component.logo}
                         title={component.title}
                         href={component.href}
-                        className="hover:text-orange-600"
+                        className={`hover:text-orange-600 ${
+                          location.pathname === component.href &&
+                          "text-orange-600"
+                        }`}
                       >
                         {component.description}
                       </ListItem>
@@ -177,7 +196,9 @@ const MainNavBar = () => {
                     onClick={() => navigate("/dashBoard")}
                   >
                     <NavigationMenuLink
-                      className={`${navigationMenuTriggerStyle()} hover:text-orange-600`}
+                      className={`${navigationMenuTriggerStyle()} hover:text-orange-600 ${
+                        location.pathname === "/dashBoard" && "text-orange-600"
+                      }`}
                     >
                       Security-Dashboard
                     </NavigationMenuLink>
@@ -187,7 +208,10 @@ const MainNavBar = () => {
                     onClick={() => navigate("/passwordVault")}
                   >
                     <NavigationMenuLink
-                      className={`${navigationMenuTriggerStyle()} hover:text-orange-600`}
+                      className={`${navigationMenuTriggerStyle()} hover:text-orange-600 ${
+                        location.pathname === "/passwordVault" &&
+                        "text-orange-600"
+                      }`}
                     >
                       Password Vault
                     </NavigationMenuLink>
@@ -200,7 +224,17 @@ const MainNavBar = () => {
                     </NavigationMenuLink>
                   </NavigationMenuItem>
                   <NavigationMenuItem className="py-1">
-                    <NavigationMenuTrigger className="hover:text-orange-600 focus:text-orange-600">
+                    <NavigationMenuTrigger
+                      className={`hover:text-orange-600 focus:text-orange-600 ${
+                        location.pathname === "/sharedPage" && "text-orange-600"
+                      } ${
+                        location.pathname === "/notesPage" && "text-orange-600"
+                      } ${
+                        location.pathname === "/cardsPage" && "text-orange-600"
+                      } ${
+                        location.pathname === "/banksPage" && "text-orange-600"
+                      }`}
+                    >
                       More
                     </NavigationMenuTrigger>
                     <NavigationMenuContent>
@@ -211,7 +245,10 @@ const MainNavBar = () => {
                             logo={component.logo}
                             title={component.title}
                             href={component.href}
-                            className="hover:text-orange-600"
+                            className={`hover:text-orange-600 ${
+                              location.pathname === component.href &&
+                              "text-orange-600"
+                            }`}
                           >
                             {component.description}
                           </ListItem>
@@ -266,7 +303,10 @@ const MainNavBar = () => {
         <div className="flex items-center">
           <ModeToggle />
           <div className="px-2"></div>
-          <Avatar className="h-16 w-16">
+          <Avatar
+            className="h-16 w-16 bg-white"
+            onClick={() => navigate("/dashBoard")}
+          >
             <AvatarImage src={logo} alt="@shadcn" />
             <AvatarFallback>CN</AvatarFallback>
           </Avatar>

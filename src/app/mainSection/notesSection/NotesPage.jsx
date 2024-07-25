@@ -24,13 +24,16 @@ import TableView from "./TableView";
 import GridView from "./GridView";
 import { useContext, useEffect, useState } from "react";
 import GlobalContext from "@/contexts/GlobalContext";
-import fetchNotes from "./fetchNotes";
+import fetchNotes from "../../../hooks/fetchNotes";
 
 const NotesPage = () => {
-  const { setNotes, accessToken } = useContext(GlobalContext);
+  const { setNotes, accessToken, notes } = useContext(GlobalContext);
   const [open, setOpen] = useState(false);
   useEffect(() => {
-    fetchNotes(accessToken, setNotes);
+    if (!notes) {
+      fetchNotes(accessToken, setNotes);
+    }
+
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
   return (

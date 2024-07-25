@@ -111,7 +111,7 @@ const TableView = () => {
               <div className="flex    ">
                 {showCVV.i === index && showCVV.s === true
                   ? decFetchedData(card?.cvvCode, userId)
-                  : decFetchedData(card?.cvvCode, userId).replace(/./g, "*")}
+                  : decFetchedData(card?.cvvCode, userId)?.replace(/./g, "*")}
                 <div className="px-1"></div>
                 {showCVV.i === index && showCVV.s === true ? (
                   <FaEye

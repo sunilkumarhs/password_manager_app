@@ -27,10 +27,12 @@ import GlobalContext from "@/contexts/GlobalContext";
 import fetchPasswords from "@/hooks/fetchPasswords";
 
 const PasswordVaultPage = () => {
-  const { setPasswords, accessToken } = useContext(GlobalContext);
+  const { setPasswords, accessToken, passwords } = useContext(GlobalContext);
   const [open, setOpen] = useState(false);
   useEffect(() => {
-    fetchPasswords(accessToken, setPasswords);
+    if (!passwords) {
+      fetchPasswords(accessToken, setPasswords);
+    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
   return (

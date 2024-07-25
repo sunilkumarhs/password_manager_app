@@ -64,7 +64,6 @@ const AddPasswords = ({ passData, setOpen }) => {
   useEffect(() => {
     setProgress(progessValidate(pass));
   }, [pass]);
-
   const onSubmit = async (data) => {
     setDisable(true);
     const formData = {

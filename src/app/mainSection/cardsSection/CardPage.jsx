@@ -24,12 +24,14 @@ import AddCards from "../inputSection/AddCards";
 import { Dialog, DialogTrigger } from "@/components/ui/dialog";
 import { useContext, useEffect, useState } from "react";
 import GlobalContext from "@/contexts/GlobalContext";
-import fetchCards from "./fetchCards";
+import fetchCards from "../../../hooks/fetchCards";
 const CardsPage = () => {
-  const { setPayCards, accessToken } = useContext(GlobalContext);
+  const { setPayCards, accessToken, payCards } = useContext(GlobalContext);
   const [open, setOpen] = useState(false);
   useEffect(() => {
-    fetchCards(accessToken, setPayCards);
+    if (!payCards) {
+      fetchCards(accessToken, setPayCards);
+    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
   return (

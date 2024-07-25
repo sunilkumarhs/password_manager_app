@@ -3,8 +3,38 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { totalValues } from "@/utils/mainConstants";
 import SecurityAnalysis from "./SecurityAnalysis";
 import SecurityAlerts from "./SecurityAlerts";
+import { useContext, useEffect } from "react";
+import GlobalContext from "@/contexts/GlobalContext";
+import fetchPasswords from "@/hooks/fetchPasswords";
+import fetchBanks from "../../hooks/fetchBanks";
+import fetchCards from "../../hooks/fetchCards";
+import fetchNotes from "../../hooks/fetchNotes";
 
 const DashBoard = () => {
+  const {
+    passwords,
+    notes,
+    payCards,
+    banksData,
+    accessToken,
+    setPasswords,
+    setNotes,
+    setPayCards,
+    setBanksData,
+  } = useContext(GlobalContext);
+  useEffect(() => {
+    fetchPasswords(accessToken, setPasswords);
+    fetchNotes(accessToken, setNotes);
+    fetchCards(accessToken, setPayCards);
+    fetchBanks(accessToken, setBanksData);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+  const counts = [
+    passwords?.length,
+    notes?.length,
+    payCards?.length,
+    banksData?.length,
+  ];
   return (
     <div className="w-full ">
       <div className="fixed w-full bg-white dark:bg-card z-10">
@@ -25,7 +55,7 @@ const DashBoard = () => {
                 {value.symbol}
               </CardHeader>
               <CardContent>
-                <div className="text-2xl font-bold py-1">{value.content}</div>
+                <div className="text-2xl font-bold py-1">{counts[index]}</div>
                 <p className="text-xs text-muted-foreground">
                   {value.description}
                 </p>

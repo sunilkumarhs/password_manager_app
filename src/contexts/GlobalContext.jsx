@@ -9,13 +9,13 @@ const GlobalContext = createContext({
   setIsAuth: () => {},
   user: null,
   setUser: () => {},
-  passwords: null,
+  passwords: [],
   setPasswords: () => {},
-  notes: null,
+  notes: [],
   setNotes: () => {},
-  payCards: null,
+  payCards: [],
   setPayCards: () => {},
-  banksData: null,
+  banksData: [],
   setBanksData: () => {},
 });
 

@@ -24,13 +24,15 @@ import TableView from "./TableView";
 import GridView from "./GridView";
 import { useContext, useEffect, useState } from "react";
 import GlobalContext from "@/contexts/GlobalContext";
-import fetchBanks from "./fetchBanks";
+import fetchBanks from "../../../hooks/fetchBanks";
 
 const BankPage = () => {
-  const { setBanksData, accessToken } = useContext(GlobalContext);
+  const { setBanksData, accessToken, banksData } = useContext(GlobalContext);
   const [open, setOpen] = useState(false);
   useEffect(() => {
-    fetchBanks(accessToken, setBanksData);
+    if (!banksData) {
+      fetchBanks(accessToken, setBanksData);
+    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
   return (

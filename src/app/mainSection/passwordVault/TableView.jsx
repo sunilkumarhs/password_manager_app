@@ -102,7 +102,7 @@ const TableView = () => {
               <div className="flex">
                 {showPassword.i === index && showPassword.s === true
                   ? decFetchedData(pass?.password, userId)
-                  : decFetchedData(pass?.password, userId).replace(/./g, "*")}
+                  : decFetchedData(pass?.password, userId)?.replace(/./g, "*")}
                 <div className="px-1"></div>
                 {showPassword.i === index && showPassword.s === true ? (
                   <FaEye
