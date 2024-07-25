@@ -33,7 +33,7 @@ const FormSchema = z.object({
 
 const VerifcationPage = () => {
   const navigate = useNavigate();
-  const { setAccessToken, setUserId, setIsAuth, setUser } =
+  const { setAccessToken, setUserId, setIsAuth, setUser, reset } =
     useContext(GlobalContext);
   const { toast } = useToast();
   const form = useForm({
@@ -47,36 +47,59 @@ const VerifcationPage = () => {
       otpToken: dectoken,
     };
     try {
-      const response = await api.post("/securepass_server/verifyOtp", {
-        headers: { "Content-Type": "application/json" },
-        body: formData,
-      });
-      const resData = response.data;
-      console.log(resData);
-      if (response.status === 200) {
-        localStorage.removeItem("otpToken");
-        const encToken = encryptData(resData.token);
-        localStorage.setItem("accessToken", encToken);
-        setAccessToken(encToken);
-        const encUserId = encryptData(resData.userId);
-        localStorage.setItem("userId", encUserId);
-        const remainingMilliseconds = 60 * 120 * 1000;
-        const expiryDate = new Date(
-          new Date().getTime() + remainingMilliseconds
-        );
-        localStorage.setItem("expiryDate", expiryDate.toISOString());
-        setUserId(encUserId);
-        setIsAuth(true);
-        fetchUser(encUserId, encToken, setUser);
-        toast({
-          title: resData.message,
-          description: (
-            <div className="mt-2 w-[340px] rounded-md bg-zinc-400 dark:bg-zinc-700 p-4">
-              <p>Your OTP is verfied successfully!</p>
-            </div>
-          ),
+      if (reset === true) {
+        const response = await api.post("/securepass_server/verifyOtp", {
+          headers: { "Content-Type": "application/json" },
+          body: formData,
         });
-        navigate("/dashBoard");
+        const resData = response.data;
+        console.log(resData);
+        if (response.status === 200) {
+          localStorage.removeItem("otpToken");
+          const encToken = encryptData(resData.token);
+          localStorage.setItem("resetToken", encToken);
+          toast({
+            title: resData.message,
+            description: (
+              <div className="mt-2 w-[340px] rounded-md bg-zinc-400 dark:bg-zinc-700 p-4">
+                <p>Your OTP is verfied successfully!</p>
+              </div>
+            ),
+          });
+          navigate("/resetPass");
+        }
+      } else {
+        const response = await api.post("/securepass_server/verifyOtp", {
+          headers: { "Content-Type": "application/json" },
+          body: formData,
+        });
+        const resData = response.data;
+        console.log(resData);
+        if (response.status === 200) {
+          localStorage.removeItem("otpToken");
+          const encToken = encryptData(resData.token);
+          localStorage.setItem("accessToken", encToken);
+          setAccessToken(encToken);
+          const encUserId = encryptData(resData.userId);
+          localStorage.setItem("userId", encUserId);
+          const remainingMilliseconds = 60 * 120 * 1000;
+          const expiryDate = new Date(
+            new Date().getTime() + remainingMilliseconds
+          );
+          localStorage.setItem("expiryDate", expiryDate.toISOString());
+          setUserId(encUserId);
+          setIsAuth(true);
+          fetchUser(encToken, setUser);
+          toast({
+            title: resData.message,
+            description: (
+              <div className="mt-2 w-[340px] rounded-md bg-zinc-400 dark:bg-zinc-700 p-4">
+                <p>Your OTP is verfied successfully!</p>
+              </div>
+            ),
+          });
+          navigate("/dashBoard");
+        }
       }
     } catch (err) {
       const errorStatus = err.response.status;

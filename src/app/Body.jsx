@@ -12,6 +12,7 @@ import SharedPage from "./mainSection/sharedSection/SharedPage";
 import { useContext, useEffect } from "react";
 import GlobalContext from "../contexts/GlobalContext";
 import fetchUser from "../utils/fetchUser";
+import PasswordReset from "./authentication/PasswordReset";
 
 const Body = () => {
   const { accessToken, setAccessToken, setIsAuth, userId, setUser } =
@@ -63,6 +64,10 @@ const Body = () => {
     {
       path: "/signIn",
       element: <SignIn />,
+    },
+    {
+      path: "/resetPass",
+      element: <PasswordReset />,
     },
     {
       path: "/verify",

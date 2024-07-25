@@ -32,6 +32,7 @@ import { api } from "@/restApi/scurePass";
 import { encryptData } from "@/utils/securingData";
 import { useContext, useEffect } from "react";
 import GlobalContext from "@/contexts/GlobalContext";
+import VerifyMail from "../authentication/VerifyMail";
 
 const FormSchema = z.object({
   email: z.string().regex(emailRegex, {
@@ -45,6 +46,7 @@ const FormSchema = z.object({
 const DefaultNavBar = () => {
   const navigate = useNavigate();
   const { toast } = useToast();
+  const [open, setOpen] = useState(false);
   const [disable, setDisable] = useState(false);
   const { isAuth } = useContext(GlobalContext);
   useEffect(() => {
@@ -105,7 +107,7 @@ const DefaultNavBar = () => {
   return (
     <div className="border-b-2 px-4 shadow-md flex justify-between items-center">
       <div className="flex">
-        <Avatar className="h-16 w-16" onClick={() => navigate("/")}>
+        <Avatar className="h-16 w-16 bg-white" onClick={() => navigate("/")}>
           <AvatarImage src={logo} alt="@shadcn" />
           <AvatarFallback>CN</AvatarFallback>
         </Avatar>
@@ -113,7 +115,7 @@ const DefaultNavBar = () => {
       <div className="flex items-center">
         <ModeToggle />
         <div className="px-2"></div>
-        <Dialog>
+        <Dialog open={open} onOpenChange={setOpen}>
           <DialogTrigger asChild>
             <Button
               variant="outline"
@@ -179,22 +181,35 @@ const DefaultNavBar = () => {
                     </FormItem>
                   )}
                 />
-
-                <Button
-                  disabled={disable}
-                  type="submit"
-                  variant="outline"
-                  className="text-orange-600 border-orange-600"
-                >
-                  {disable ? (
-                    <>
-                      <ReloadIcon className="mr-2 h-4 w-4 animate-spin" />
-                      SigningIn Please Wait!
-                    </>
-                  ) : (
-                    "SignIn"
-                  )}
-                </Button>
+                <div className="flex justify-between">
+                  <Button
+                    disabled={disable}
+                    type="submit"
+                    variant="outline"
+                    className="text-orange-600 border-orange-600"
+                  >
+                    {disable ? (
+                      <>
+                        <ReloadIcon className="mr-2 h-4 w-4 animate-spin" />
+                        SigningIn Please Wait!
+                      </>
+                    ) : (
+                      "SignIn"
+                    )}
+                  </Button>
+                  <Dialog>
+                    <DialogTrigger asChild>
+                      <Button
+                        disabled={disable}
+                        variant="outline"
+                        className="text-orange-600 border-orange-600"
+                      >
+                        Forgot Password?
+                      </Button>
+                    </DialogTrigger>
+                    <VerifyMail setOpen={setOpen} />
+                  </Dialog>
+                </div>
               </form>
             </Form>
             <DialogFooter className="sm:justify-center">

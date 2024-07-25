@@ -17,6 +17,8 @@ const GlobalContext = createContext({
   setPayCards: () => {},
   banksData: [],
   setBanksData: () => {},
+  reset: false,
+  setReset: () => {},
 });
 
 export default GlobalContext;

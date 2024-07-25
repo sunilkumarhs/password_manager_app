@@ -14,6 +14,7 @@ const ContextWrapper = (props) => {
   const [notes, setNotes] = useState([]);
   const [payCards, setPayCards] = useState([]);
   const [banksData, setBanksData] = useState([]);
+  const [reset, setReset] = useState(false);
   return (
     <GlobalContext.Provider
       value={{
@@ -33,6 +34,8 @@ const ContextWrapper = (props) => {
         setPayCards,
         banksData,
         setBanksData,
+        reset,
+        setReset,
       }}
     >
       {props.children}

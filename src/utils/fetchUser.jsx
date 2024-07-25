@@ -2,11 +2,10 @@ import { toast } from "../components/ui/use-toast";
 import { api } from "../restApi/scurePass";
 import { decryptData } from "./securingData";
 
-const fetchUser = async (userId, accessToken, setUser) => {
-  const id = decryptData(userId);
+const fetchUser = async (accessToken, setUser) => {
   try {
     const token = decryptData(accessToken);
-    const response = await api.get("/securepass_server/fetchUser/" + id, {
+    const response = await api.get("/securepass_server/fetchUser", {
       headers: {
         Authorization: "Bearer " + token,
       },

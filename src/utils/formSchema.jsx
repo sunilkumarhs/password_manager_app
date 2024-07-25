@@ -7,10 +7,22 @@ export const SignUpFormSchema = z
     }),
     password: z.string().regex(passwordRegex, {
       message:
-        "Your password must contain aleast one uppercase, lowercase, special and number characters",
+        "Your password must contain aleast one uppercase, lowercase, special and number with length of 12 characters or more",
     }),
     cnfPassword: z.string(),
     reminder: z.string(),
+  })
+  .refine((data) => data.password === data.cnfPassword, {
+    message: "passwordMismatchErrorMessage",
+    path: ["cnfPassword"],
+  });
+export const ResetPassFormSchema = z
+  .object({
+    password: z.string().regex(passwordRegex, {
+      message:
+        "Your password must contain aleast one uppercase, lowercase, special and number with length of 12 characters or more",
+    }),
+    cnfPassword: z.string(),
   })
   .refine((data) => data.password === data.cnfPassword, {
     message: "passwordMismatchErrorMessage",
