@@ -67,7 +67,6 @@ const AddPasswords = ({ passData, setOpen }) => {
 
   const onSubmit = async (data) => {
     setDisable(true);
-    console.log(data.password);
     const formData = {
       website: data.url,
       name: data.name,
