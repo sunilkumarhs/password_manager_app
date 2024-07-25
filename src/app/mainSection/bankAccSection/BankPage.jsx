@@ -30,7 +30,7 @@ const BankPage = () => {
   const { setBanksData, accessToken, banksData } = useContext(GlobalContext);
   const [open, setOpen] = useState(false);
   useEffect(() => {
-    if (!banksData) {
+    if (banksData.length === 0) {
       fetchBanks(accessToken, setBanksData);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps

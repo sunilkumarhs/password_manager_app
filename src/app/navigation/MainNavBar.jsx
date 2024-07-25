@@ -51,6 +51,7 @@ const MainNavBar = () => {
   const logoutHandler = () => {
     localStorage.removeItem("accessToken");
     localStorage.removeItem("userId");
+    localStorage.removeItem("expiryDate");
     setIsAuth(false);
     setAccessToken(null);
     setUserId(null);

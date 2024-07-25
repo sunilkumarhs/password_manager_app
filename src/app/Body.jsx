@@ -15,11 +15,11 @@ import fetchUser from "../utils/fetchUser";
 import PasswordReset from "./authentication/PasswordReset";
 
 const Body = () => {
-  const { accessToken, setAccessToken, setIsAuth, userId, setUser } =
+  const { accessToken, setAccessToken, setIsAuth, setUser } =
     useContext(GlobalContext);
   useEffect(() => {
     if (accessToken) {
-      fetchUser(userId, accessToken, setUser);
+      fetchUser(accessToken, setUser);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);

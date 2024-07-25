@@ -30,7 +30,7 @@ const PasswordVaultPage = () => {
   const { setPasswords, accessToken, passwords } = useContext(GlobalContext);
   const [open, setOpen] = useState(false);
   useEffect(() => {
-    if (!passwords) {
+    if (passwords.length === 0) {
       fetchPasswords(accessToken, setPasswords);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps

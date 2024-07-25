@@ -29,7 +29,7 @@ const CardsPage = () => {
   const { setPayCards, accessToken, payCards } = useContext(GlobalContext);
   const [open, setOpen] = useState(false);
   useEffect(() => {
-    if (!payCards) {
+    if (payCards.length === 0) {
       fetchCards(accessToken, setPayCards);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps

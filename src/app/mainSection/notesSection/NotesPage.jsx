@@ -30,10 +30,9 @@ const NotesPage = () => {
   const { setNotes, accessToken, notes } = useContext(GlobalContext);
   const [open, setOpen] = useState(false);
   useEffect(() => {
-    if (!notes) {
+    if (notes.length === 0) {
       fetchNotes(accessToken, setNotes);
     }
-
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
   return (
