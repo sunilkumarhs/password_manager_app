@@ -31,9 +31,9 @@ export const SiteFormSchema = z.object({
 });
 
 export const NotesFormSchema = z.object({
-  name: z.string(),
+  name: z.string().min(5, { message: "Name must be atleast 5 characters." }),
   folder: z.string(),
-  notes: z.string(),
+  notes: z.string().min(5, { message: "Notes must be atleast 5 characters." }),
 });
 
 export const CardFormSchema = z.object({

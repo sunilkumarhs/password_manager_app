@@ -1,3 +1,4 @@
+/* eslint-disable react/prop-types */
 import { Button } from "@/components/ui/button";
 import { useNavigate } from "react-router-dom";
 import {
@@ -23,7 +24,7 @@ import {
 import { useToast } from "@/components/ui/use-toast";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { ReloadIcon } from "@radix-ui/react-icons";
 import { IoDocumentAttach } from "react-icons/io5";
 import {
@@ -38,40 +39,105 @@ import {
 import { Textarea } from "@/components/ui/textarea";
 import { months } from "@/utils/mainConstants";
 import { CardFormSchema } from "@/utils/formSchema";
+import { decryptData } from "@/utils/securingData";
+import GlobalContext from "@/contexts/GlobalContext";
+import { api } from "@/restApi/scurePass";
+import { decFetchedData } from "@/utils/securingData";
 
-const AddCards = () => {
+const AddCards = ({ cardData, setOpen }) => {
   const navigate = useNavigate();
   const { toast } = useToast();
+  const { accessToken, userId, payCards, setPayCards } =
+    useContext(GlobalContext);
   const [disable, setDisable] = useState(false);
+  const [edit, setEdit] = useState(false);
   const form = useForm({
     resolver: zodResolver(CardFormSchema),
     defaultValues: {
-      name: "",
-      folder: "",
-      cardName: "",
-      type: "",
-      cardNumber: "",
-      CVVCode: "",
-      startDate: "",
-      startYear: "",
-      endDate: "",
-      endYear: "",
-      notes: "",
+      name: cardData ? cardData?.name : "",
+      folder: cardData ? cardData?.folder : "",
+      cardName: cardData ? decFetchedData(cardData?.cardName, userId) : "",
+      type: cardData ? decFetchedData(cardData?.type, userId) : "",
+      cardNumber: cardData ? decFetchedData(cardData?.cardNumber, userId) : "",
+      CVVCode: cardData ? decFetchedData(cardData?.cvvCode, userId) : "",
+      startDate: cardData ? decFetchedData(cardData?.startDate, userId) : "",
+      startYear: cardData ? decFetchedData(cardData?.startYear, userId) : "",
+      endDate: cardData ? decFetchedData(cardData?.endDate, userId) : "",
+      endYear: cardData ? decFetchedData(cardData?.endYear, userId) : "",
+      notes: cardData ? decFetchedData(cardData?.notes, userId) : "",
     },
   });
+  useEffect(() => {
+    cardData ? setEdit(true) : setEdit(false);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
-  function onSubmit() {
+  const onSubmit = async (data) => {
     setDisable(true);
-    toast({
-      title: "Successfull Added!",
-      description: (
-        <div className="mt-2 w-[340px] rounded-md bg-slate-700 p-4">
-          <p>Your data has been stored successfully!</p>
-        </div>
-      ),
-    });
-    navigate("/dashBoard");
-  }
+    const formData = {
+      name: data.name,
+      folder: data.folder,
+      cardName: data.cardName,
+      type: data.type,
+      cardNumber: data.cardNumber,
+      cvvCode: data.CVVCode,
+      startDate: data.startDate,
+      startYear: data.startYear,
+      endDate: data.endDate,
+      endYear: data.endYear,
+      notes: data.notes,
+    };
+    try {
+      const token = decryptData(accessToken);
+      let url = "/secure_passCards/addCard";
+      if (edit) {
+        url = "/secure_passCards/editCard/" + cardData?._id;
+      }
+      const response = await api.post(url, {
+        headers: {
+          Authorization: "Bearer " + token,
+        },
+        body: formData,
+      });
+      const resData = response.data;
+      if (response.status === 201) {
+        let updatedCards = [...payCards];
+        if (edit) {
+          const cardIndex = payCards.findIndex((p) => p._id === cardData._id);
+          updatedCards[cardIndex] = resData.card;
+        } else {
+          updatedCards = payCards.concat(resData.card);
+        }
+        setPayCards(updatedCards);
+        toast({
+          title: resData.message,
+          description: (
+            <div className="mt-2 w-[340px] rounded-md bg-zinc-400 dark:bg-zinc-700 p-4">
+              <p>Your Card with credentials has been stored successfully!</p>
+            </div>
+          ),
+        });
+        setOpen(false);
+        setDisable(false);
+        form.reset();
+        navigate("/cardsPage");
+      }
+    } catch (err) {
+      console.log(err);
+      const errorStatus = err.response.status;
+      const errMessage = err.response.data.message;
+      const errMessage1 = err.response.data.error;
+      setDisable(false);
+      toast({
+        title: "ErrorCode:" + errorStatus,
+        description: (
+          <div className="mt-2 w-[340px] rounded-md bg-zinc-400 dark:bg-zinc-700 p-4">
+            <p>{errMessage || errMessage1}</p>
+          </div>
+        ),
+      });
+    }
+  };
   return (
     <DialogContent className="max-w-4xl pb-0 max-sm:w-11/12 ">
       <Form {...form}>
@@ -82,7 +148,7 @@ const AddCards = () => {
           <DialogHeader className="mt-4 py-2 bg-orange-600 px-2">
             <DialogTitle className="flex justify-between">
               <p className="font-bold text-xl px-2 text-white">
-                Add Payment Card Details
+                {edit ? "Edit" : "Add"} Payment Card Details
               </p>
             </DialogTitle>
           </DialogHeader>{" "}
@@ -248,7 +314,10 @@ const AddCards = () => {
                   render={({ field }) => (
                     <FormItem className="w-3/5 max-sm:w-full">
                       <FormControl>
-                        <Select>
+                        <Select
+                          onValueChange={field.onChange}
+                          defaultValue={field.value}
+                        >
                           <SelectTrigger className="w-full">
                             <SelectValue
                               placeholder="Select Month"
@@ -298,9 +367,13 @@ const AddCards = () => {
                   render={({ field }) => (
                     <FormItem className="w-3/5 max-sm:w-full">
                       <FormControl>
-                        <Select>
+                        <Select
+                          onValueChange={field.onChange}
+                          defaultValue={field.value}
+                        >
                           <SelectTrigger className="w-full">
                             <SelectValue
+                              id="endDate"
                               placeholder="Select Month"
                               {...field}
                             />

@@ -22,7 +22,16 @@ import TableView from "./TableView";
 import GridView from "./GridView";
 import AddCards from "../inputSection/AddCards";
 import { Dialog, DialogTrigger } from "@/components/ui/dialog";
+import { useContext, useEffect, useState } from "react";
+import GlobalContext from "@/contexts/GlobalContext";
+import fetchCards from "./fetchCards";
 const CardsPage = () => {
+  const { setPayCards, accessToken } = useContext(GlobalContext);
+  const [open, setOpen] = useState(false);
+  useEffect(() => {
+    fetchCards(accessToken, setPayCards);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
   return (
     <div>
       <div>
@@ -70,14 +79,14 @@ const CardsPage = () => {
                     Export
                   </span>
                 </Button>
-                <Dialog>
+                <Dialog open={open} onOpenChange={setOpen}>
                   <DialogTrigger className="flex items-center border gap-1 h-7 text-sm px-2 rounded-md bg-orange-600 text-white hover:bg-black dark:hover:bg-white dark:hover:text-black">
                     <PlusCircle className="h-3.5 w-3.5" />
                     <span className="sr-only sm:not-sr-only sm:whitespace-nowrap">
                       Add
                     </span>
                   </DialogTrigger>
-                  <AddCards />
+                  <AddCards setOpen={setOpen} />
                 </Dialog>
               </div>
             </div>

@@ -10,6 +10,10 @@ const ContextWrapper = (props) => {
     localStorage.getItem("accessToken") ? true : false
   );
   const [user, setUser] = useState(null);
+  const [passwords, setPasswords] = useState(null);
+  const [notes, setNotes] = useState(null);
+  const [payCards, setPayCards] = useState(null);
+  const [banksData, setBanksData] = useState(null);
   return (
     <GlobalContext.Provider
       value={{
@@ -21,6 +25,14 @@ const ContextWrapper = (props) => {
         setIsAuth,
         user,
         setUser,
+        passwords,
+        setPasswords,
+        notes,
+        setNotes,
+        payCards,
+        setPayCards,
+        banksData,
+        setBanksData,
       }}
     >
       {props.children}

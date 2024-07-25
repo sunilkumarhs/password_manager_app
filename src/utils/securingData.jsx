@@ -17,3 +17,16 @@ export const decryptData = (encryptedData) => {
     ).toString(CryptoJS.enc.Utf8);
   return JSON.parse(decryptedData);
 };
+
+export const decFetchedData = (encryptedData, userId) => {
+  try {
+    const decryptedData = AES.decrypt(
+      encryptedData,
+      // eslint-disable-next-line no-undef
+      decryptData(userId)
+    ).toString(CryptoJS.enc.Utf8);
+    return JSON.parse(decryptedData);
+  } catch (err) {
+    console.log(err);
+  }
+};

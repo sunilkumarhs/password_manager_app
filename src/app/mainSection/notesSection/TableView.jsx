@@ -16,9 +16,57 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { Button } from "@/components/ui/button";
 import { FcDocument } from "react-icons/fc";
+import { useContext, useState } from "react";
+import GlobalContext from "@/contexts/GlobalContext";
+import { decFetchedData, decryptData } from "@/utils/securingData";
+import { api } from "@/restApi/scurePass";
+import { toast } from "@/components/ui/use-toast";
+import { Dialog, DialogTrigger } from "@/components/ui/dialog";
+import AddNotes from "../inputSection/AddNotes";
+import ViewNotes from "./ViewNote";
 
 const TableView = () => {
-  const repeat = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
+  const { notes, userId, accessToken, setNotes } = useContext(GlobalContext);
+  const [open, setOpen] = useState(false);
+  const handleDelete = async (noteId) => {
+    const token = decryptData(accessToken);
+    try {
+      const response = await api.delete(
+        "/secure_passNotes/deleteNote/" + noteId,
+        {
+          headers: {
+            Authorization: "Bearer " + token,
+          },
+        }
+      );
+      const resData = response.data;
+      console.log(resData);
+      if (response.status === 200) {
+        const updatedNotes = notes.filter((note) => note._id !== noteId);
+        setNotes(updatedNotes);
+        toast({
+          title: resData.message,
+          description: (
+            <div className="mt-2 w-[340px] rounded-md bg-zinc-400 dark:bg-zinc-700 p-4">
+              <p>Your Note with credentials has been deleted successfully!</p>
+            </div>
+          ),
+        });
+      }
+    } catch (err) {
+      const errorStatus = err.response.status;
+      const errMessage = err.response.data.message;
+      const errMessage1 = err.response.data.error;
+      toast({
+        title: "ErrorCode:" + errorStatus,
+        description: (
+          <div className="mt-2 w-[340px] rounded-md bg-zinc-400 dark:bg-zinc-700 p-4">
+            <p>{errMessage || errMessage1}</p>
+          </div>
+        ),
+      });
+    }
+  };
   return (
     <Table className="relative">
       <TableHeader>
@@ -28,26 +76,28 @@ const TableView = () => {
           </TableHead>
           <TableHead className="">Name</TableHead>
           <TableHead className="hidden md:table-cell">Created at</TableHead>
-          <TableHead className="hidden md:table-cell">Last Used</TableHead>
+          <TableHead className="hidden md:table-cell">Last Updated</TableHead>
           <TableHead>
             <span className="sr-only">Actions</span>
           </TableHead>
         </TableRow>
       </TableHeader>
       <TableBody>
-        {repeat.map((r) => (
-          <TableRow key={r}>
+        {notes?.map((note) => (
+          <TableRow key={note._id}>
             <TableCell className=" ">
               <FcDocument className="text-4xl" />
             </TableCell>
             <TableCell className=" font-medium max-sm:text-xs">
-              Laser Lemonade Machine
+              {decFetchedData(note?.name, userId)}
             </TableCell>
             <TableCell className="hidden md:table-cell">
-              2023-07-12 10:42 AM
+              {new Date(note?.createdAt).toLocaleDateString("en-in")}
             </TableCell>
             <TableCell className="hidden md:table-cell">
-              2023-07-12 10:42 AM
+              {note.updatedAt
+                ? new Date(note.updatedAt).toLocaleDateString("en-in")
+                : ""}
             </TableCell>
             <TableCell>
               <DropdownMenu>
@@ -59,9 +109,31 @@ const TableView = () => {
                 </DropdownMenuTrigger>
                 <DropdownMenuContent align="end">
                   <DropdownMenuLabel>Actions</DropdownMenuLabel>
-                  <DropdownMenuItem>View</DropdownMenuItem>
-                  <DropdownMenuItem>Edit</DropdownMenuItem>
-                  <DropdownMenuItem>Delete</DropdownMenuItem>
+                  <Dialog>
+                    <DialogTrigger
+                      className="w-full h-full items-start flex justify-start"
+                      asChild
+                    >
+                      <DropdownMenuItem onSelect={(e) => e.preventDefault()}>
+                        View
+                      </DropdownMenuItem>
+                    </DialogTrigger>
+                    <ViewNotes noteData={note} />
+                  </Dialog>
+                  <Dialog open={open} onOpenChange={setOpen}>
+                    <DialogTrigger
+                      className="w-full h-full items-start flex justify-start"
+                      asChild
+                    >
+                      <DropdownMenuItem onSelect={(e) => e.preventDefault()}>
+                        Edit
+                      </DropdownMenuItem>
+                    </DialogTrigger>
+                    <AddNotes noteData={note} setOpen={setOpen} />
+                  </Dialog>
+                  <DropdownMenuItem onClick={() => handleDelete(note._id)}>
+                    Delete
+                  </DropdownMenuItem>
                 </DropdownMenuContent>
               </DropdownMenu>
             </TableCell>

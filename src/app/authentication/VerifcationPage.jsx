@@ -33,7 +33,7 @@ const FormSchema = z.object({
 
 const VerifcationPage = () => {
   const navigate = useNavigate();
-  const { setAccessToken, setUserId, setIsAuth, accessToken, userId, setUser } =
+  const { setAccessToken, setUserId, setIsAuth, setUser } =
     useContext(GlobalContext);
   const { toast } = useToast();
   const form = useForm({
@@ -60,14 +60,14 @@ const VerifcationPage = () => {
         setAccessToken(encToken);
         const encUserId = encryptData(resData.userId);
         localStorage.setItem("userId", encUserId);
-        const remainingMilliseconds = 60 * 60 * 1000;
+        const remainingMilliseconds = 60 * 120 * 1000;
         const expiryDate = new Date(
           new Date().getTime() + remainingMilliseconds
         );
         localStorage.setItem("expiryDate", expiryDate.toISOString());
         setUserId(encUserId);
         setIsAuth(true);
-        fetchUser(userId, accessToken, setUser);
+        fetchUser(encUserId, encToken, setUser);
         toast({
           title: resData.message,
           description: (

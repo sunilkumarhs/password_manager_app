@@ -22,8 +22,17 @@ import TableView from "./TableView";
 import GridView from "./GridView";
 import { Dialog, DialogTrigger } from "@/components/ui/dialog";
 import AddPasswords from "../inputSection/AddPasswords";
+import { useContext, useEffect, useState } from "react";
+import GlobalContext from "@/contexts/GlobalContext";
+import fetchPasswords from "@/hooks/fetchPasswords";
 
 const PasswordVaultPage = () => {
+  const { setPasswords, accessToken } = useContext(GlobalContext);
+  const [open, setOpen] = useState(false);
+  useEffect(() => {
+    fetchPasswords(accessToken, setPasswords);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
   return (
     <div>
       <div>
@@ -71,14 +80,14 @@ const PasswordVaultPage = () => {
                     Export
                   </span>
                 </Button>
-                <Dialog>
+                <Dialog open={open} onOpenChange={setOpen}>
                   <DialogTrigger className="flex items-center border gap-1 h-7 text-sm px-2 rounded-md bg-orange-600 text-white hover:bg-black dark:hover:bg-white dark:hover:text-black">
                     <PlusCircle className="h-3.5 w-3.5" />
                     <span className="sr-only sm:not-sr-only sm:whitespace-nowrap">
                       Add
                     </span>
                   </DialogTrigger>
-                  <AddPasswords />
+                  <AddPasswords setOpen={setOpen} />
                 </Dialog>
               </div>
             </div>

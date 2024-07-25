@@ -59,8 +59,7 @@ const MainNavBar = () => {
     if (!isAuth) {
       navigate("/");
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  });
   return (
     <>
       <div className="max-lg:hidden border-b-2 px-4 shadow-md flex justify-between items-center">

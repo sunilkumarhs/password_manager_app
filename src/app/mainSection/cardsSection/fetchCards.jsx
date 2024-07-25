@@ -1,18 +1,17 @@
-import { toast } from "../components/ui/use-toast";
-import { api } from "../restApi/scurePass";
-import { decryptData } from "./securingData";
+import { toast } from "@/components/ui/use-toast";
+import { api } from "@/restApi/scurePass";
+import { decryptData } from "@/utils/securingData";
 
-const fetchUser = async (userId, accessToken, setUser) => {
-  const id = decryptData(userId);
+const fetchCards = async (accessToken, setPayCards) => {
   try {
     const token = decryptData(accessToken);
-    const response = await api.get("/securepass_server/fetchUser/" + id, {
+    const response = await api.get("/secure_passCards/getCards", {
       headers: {
         Authorization: "Bearer " + token,
       },
     });
     if (response.status === 200) {
-      setUser(response.data);
+      setPayCards(response.data.cards);
     }
   } catch (err) {
     const errorStatus = err.response.status;
@@ -29,4 +28,4 @@ const fetchUser = async (userId, accessToken, setUser) => {
   }
 };
 
-export default fetchUser;
+export default fetchCards;
