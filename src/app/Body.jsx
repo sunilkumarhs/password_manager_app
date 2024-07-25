@@ -13,6 +13,7 @@ import { useContext, useEffect } from "react";
 import GlobalContext from "../contexts/GlobalContext";
 import fetchUser from "../utils/fetchUser";
 import PasswordReset from "./authentication/PasswordReset";
+import PasswordGenerater from "./mainSection/PasswordGenerater";
 
 const Body = () => {
   const { accessToken, setAccessToken, setIsAuth, setUser } =
@@ -34,7 +35,6 @@ const Body = () => {
     }
     const remainingMilliseconds =
       new Date(expiryDate).getTime() - new Date().getTime();
-    console.log(remainingMilliseconds);
     setAutoLogout(remainingMilliseconds);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   });
@@ -74,6 +74,10 @@ const Body = () => {
       element: <VerifcationPage />,
     },
     { path: "/dashBoard", element: <DashBoard /> },
+    {
+      path: "/passGenerater",
+      element: <PasswordGenerater />,
+    },
     {
       path: "/passwordVault",
       element: <PasswordVaultPage />,

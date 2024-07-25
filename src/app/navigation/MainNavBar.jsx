@@ -85,6 +85,15 @@ const MainNavBar = () => {
                   Security-Dashboard
                 </NavigationMenuLink>
               </NavigationMenuItem>
+              <NavigationMenuItem onClick={() => navigate("/passGenerater")}>
+                <NavigationMenuLink
+                  className={`${navigationMenuTriggerStyle()} hover:text-orange-600 ${
+                    location.pathname === "/passGenerater" && "text-orange-600"
+                  }`}
+                >
+                  Password Generater
+                </NavigationMenuLink>
+              </NavigationMenuItem>
               <NavigationMenuItem onClick={() => navigate("/passwordVault")}>
                 <NavigationMenuLink
                   className={`${navigationMenuTriggerStyle()} hover:text-orange-600 ${
@@ -202,6 +211,18 @@ const MainNavBar = () => {
                       }`}
                     >
                       Security-Dashboard
+                    </NavigationMenuLink>
+                  </NavigationMenuItem>
+                  <NavigationMenuItem
+                    onClick={() => navigate("/passGenerater")}
+                  >
+                    <NavigationMenuLink
+                      className={`${navigationMenuTriggerStyle()} hover:text-orange-600 ${
+                        location.pathname === "/passGenerater" &&
+                        "text-orange-600"
+                      }`}
+                    >
+                      Password Generater
                     </NavigationMenuLink>
                   </NavigationMenuItem>
                   <NavigationMenuItem
