@@ -26,13 +26,7 @@ import {
   SheetTitle,
   SheetTrigger,
 } from "@/components/ui/sheet";
-import { ImProfile, ImMenu } from "react-icons/im";
-import {
-  FaUserAstronaut,
-  FaUserSecret,
-  FaUserNinja,
-  FaUserShield,
-} from "react-icons/fa6";
+import { ImMenu } from "react-icons/im";
 import { LuLogOut } from "react-icons/lu";
 import { MdOutlineSettings } from "react-icons/md";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
@@ -42,11 +36,12 @@ import { components } from "@/utils/constants";
 import { useLocation, useNavigate } from "react-router-dom";
 import GlobalContext from "@/contexts/GlobalContext";
 import { useContext, useEffect } from "react";
+import { profileAvtar } from "@/utils/mainConstants";
 
 const MainNavBar = () => {
   const navigate = useNavigate();
   let location = useLocation();
-  const { setAccessToken, setUserId, setIsAuth, isAuth } =
+  const { user, setAccessToken, setUserId, setIsAuth, isAuth } =
     useContext(GlobalContext);
   const logoutHandler = () => {
     localStorage.removeItem("accessToken");
@@ -149,12 +144,9 @@ const MainNavBar = () => {
           <div className="px-2"></div>
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
-              <Button
-                variant="outline"
-                className="text-orange-600 border-orange-600"
-              >
-                <FaUserSecret className="text-xl" />
-              </Button>
+              <div className="text-5xl hover:cursor-pointer">
+                {profileAvtar[user?.avtarIndex]?.avtar}
+              </div>
             </DropdownMenuTrigger>
             <DropdownMenuContent className="w-56 m-5">
               <DropdownMenuLabel className="text-orange-600">
@@ -162,13 +154,7 @@ const MainNavBar = () => {
               </DropdownMenuLabel>
               <DropdownMenuSeparator />
               <DropdownMenuGroup>
-                <DropdownMenuItem>
-                  Profile
-                  <DropdownMenuShortcut>
-                    <ImProfile className="text-lg text-orange-600" />
-                  </DropdownMenuShortcut>
-                </DropdownMenuItem>
-                <DropdownMenuItem>
+                <DropdownMenuItem onClick={() => navigate("/settings")}>
                   Settings
                   <DropdownMenuShortcut>
                     <MdOutlineSettings className="text-lg text-orange-600" />
@@ -284,12 +270,9 @@ const MainNavBar = () => {
             <div className="flex justify-center py-5">
               <DropdownMenu>
                 <DropdownMenuTrigger asChild>
-                  <Button
-                    variant="outline"
-                    className="text-orange-600 border-orange-600"
-                  >
-                    <FaUserSecret className="text-xl" />
-                  </Button>
+                  <div className="text-5xl hover:cursor-pointer">
+                    {profileAvtar[user?.avtarIndex]?.avtar}
+                  </div>
                 </DropdownMenuTrigger>
                 <DropdownMenuContent className="w-56 my-3">
                   <DropdownMenuLabel className="text-orange-600">
@@ -297,13 +280,7 @@ const MainNavBar = () => {
                   </DropdownMenuLabel>
                   <DropdownMenuSeparator />
                   <DropdownMenuGroup>
-                    <DropdownMenuItem>
-                      Profile
-                      <DropdownMenuShortcut>
-                        <ImProfile className="text-lg text-orange-600" />
-                      </DropdownMenuShortcut>
-                    </DropdownMenuItem>
-                    <DropdownMenuItem>
+                    <DropdownMenuItem onClick={() => navigate("/settings")}>
                       Settings
                       <DropdownMenuShortcut>
                         <MdOutlineSettings className="text-lg text-orange-600" />

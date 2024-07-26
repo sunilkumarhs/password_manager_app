@@ -14,6 +14,7 @@ import GlobalContext from "../contexts/GlobalContext";
 import fetchUser from "../utils/fetchUser";
 import PasswordReset from "./authentication/PasswordReset";
 import PasswordGenerater from "./mainSection/PasswordGenerater";
+import Settings from "./userInfo/Settings";
 
 const Body = () => {
   const { accessToken, setAccessToken, setIsAuth, setUser } =
@@ -72,6 +73,10 @@ const Body = () => {
     {
       path: "/verify",
       element: <VerifcationPage />,
+    },
+    {
+      path: "settings",
+      element: <Settings />,
     },
     { path: "/dashBoard", element: <DashBoard /> },
     {

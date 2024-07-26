@@ -2,6 +2,29 @@ import { PiPasswordFill } from "react-icons/pi";
 import { FaNoteSticky } from "react-icons/fa6";
 import { RiSecurePaymentFill } from "react-icons/ri";
 import { MdAccountBalance } from "react-icons/md";
+import {
+  FaUserAstronaut,
+  FaUserSecret,
+  FaUserNinja,
+  FaUserShield,
+} from "react-icons/fa6";
+
+export const profileAvtar = [
+  {
+    avtar: <FaUserSecret className="p-1 text-orange-600 border rounded-full" />,
+  },
+  {
+    avtar: (
+      <FaUserAstronaut className="p-1 text-orange-600 border rounded-full" />
+    ),
+  },
+  {
+    avtar: <FaUserShield className="p-1 text-orange-600 border rounded-full" />,
+  },
+  {
+    avtar: <FaUserNinja className="p-1 text-orange-600 border rounded-full" />,
+  },
+];
 
 export const totalValues = [
   {

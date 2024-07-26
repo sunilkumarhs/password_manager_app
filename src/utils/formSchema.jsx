@@ -29,6 +29,17 @@ export const ResetPassFormSchema = z
     path: ["cnfPassword"],
   });
 
+  export const ChangePassFormSchema = z.object({
+    password: z.string().regex(passwordRegex, {
+      message:
+        "Your password must contain aleast one uppercase, lowercase, special and number with length of 12 characters or more",
+    }),
+    newPassword: z.string().regex(passwordRegex, {
+      message:
+        "Your password must contain aleast one uppercase, lowercase, special and number with length of 12 characters or more",
+    }),
+  });
+
 export const SiteFormSchema = z.object({
   url: z.string().url(),
   name: z.string(),

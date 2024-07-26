@@ -20,11 +20,11 @@ export const decryptData = (encryptedData) => {
 
 export const decFetchedData = (encryptedData, userId) => {
   try {
-    const decryptedData = AES.decrypt(
-      encryptedData,
-      // eslint-disable-next-line no-undef
-      decryptData(userId)
-    ).toString(CryptoJS.enc.Utf8);
+    // eslint-disable-next-line no-undef
+    const secKey = process.env.SECUREPASS_ENC_KEY + decryptData(userId);
+    const decryptedData = AES.decrypt(encryptedData, secKey).toString(
+      CryptoJS.enc.Utf8
+    );
     return JSON.parse(decryptedData);
   } catch (err) {
     console.log(err);

@@ -74,7 +74,6 @@ const VerifcationPage = () => {
           body: formData,
         });
         const resData = response.data;
-        console.log(resData);
         if (response.status === 200) {
           localStorage.removeItem("otpToken");
           const encToken = encryptData(resData.token);
