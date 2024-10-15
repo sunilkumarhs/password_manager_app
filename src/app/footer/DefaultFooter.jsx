@@ -75,7 +75,7 @@ const DefaultFooter = () => {
           </div>
           <div className="flex justify-center py-4">
             <Link className="hover:text-orange-600 hover:underline">
-              © 2024 LastPass US LP. All rights reserved.
+              © 2024 SecurePass. All rights reserved.
             </Link>
           </div>
           <div className="py-2"></div>
